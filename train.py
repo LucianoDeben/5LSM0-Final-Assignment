@@ -19,8 +19,8 @@ from tqdm import tqdm
 import keras
 
 DATA_PATH = "data/Cityscapes"
-BATCH_SIZE = 2
-NUM_WORKERS = 1
+BATCH_SIZE = 64
+NUM_WORKERS = 0
 
 def get_arg_parser():
     parser = ArgumentParser()
@@ -123,7 +123,7 @@ def main(args):
     scheduler = StepLR(optimizer, step_size=10, gamma=0.1)
 
     # Define the number of epochs
-    n_epochs = 1
+    n_epochs = 20
     
     # Define the mean IOU metric
     m_iou_train = keras.metrics.MeanIoU(num_classes=34)
