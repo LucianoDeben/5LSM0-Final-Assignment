@@ -18,7 +18,7 @@ import matplotlib.pyplot as plt
 from tqdm import tqdm
 import keras
 
-DATA_PATH = "./data/Cityscapes"
+DATA_PATH = "data/Cityscapes"
 BATCH_SIZE = 2
 NUM_WORKERS = 1
 
@@ -44,7 +44,7 @@ def get_data_loader(args, batch_size, num_workers):
     ])
 
     # Load the dataset
-    dataset = Cityscapes(DATA_PATH, split='train', mode='fine', target_type='semantic', transform=transform, target_transform=target_transform)
+    dataset = Cityscapes(args.data_path, split='train', mode='fine', target_type='semantic', transform=transform, target_transform=target_transform)
     
     # Define the size of the validation set
     val_size = int(0.1 * len(dataset))
@@ -185,7 +185,7 @@ def main(args):
     plt.show()
     
     # Save model
-    torch.save(model.state_dict(), "./models/model.pth")
+    torch.save(model.state_dict(), "models/unet-model.pth")
 
 if __name__ == "__main__":
     # Get the arguments
