@@ -3,7 +3,6 @@ import torch.nn as nn
 
 """ segmentation model example
 """
-
 class Model(nn.Module):
     def __init__(self):
         super().__init__()
@@ -60,6 +59,10 @@ class conv_block(nn.Module):
 
         self.relu = nn.ReLU()
 
+        # Apply He initialization
+        nn.init.kaiming_uniform_(self.conv1.weight, nonlinearity='relu')
+        nn.init.kaiming_uniform_(self.conv2.weight, nonlinearity='relu')
+
     def forward(self, inputs):
         x = self.conv1(inputs)
         x = self.bn1(x)
@@ -104,5 +107,4 @@ class decoder_block(nn.Module):
         x = self.up(inputs)
         x = torch.cat([x, skip], axis=1)
         x = self.conv(x)
-
         return x
