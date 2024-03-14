@@ -175,12 +175,12 @@ def main(args):
     })
         scheduler.step()
         
-    # 4. Log an artifact to W&B
-    wandb.log_artifact(model)
+    # # 4. Log an artifact to W&B
+    # wandb.log_artifact(model)
 
-    # Optional: save model at the end
-    model.to_onnx()
-    wandb.save("model/model.onnx")
+    # # Optional: save model at the end
+    # model.to_onnx()
+    # wandb.save("model/model.onnx")
     
     # Save model
     torch.save(model.state_dict(), "models/unet-model.pth")
