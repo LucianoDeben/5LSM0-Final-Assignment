@@ -1,0 +1,2386 @@
+{
+    "_version": "v0",
+    "source_type": "repo",
+    "source": {
+        "git": {
+            "remote": "https://github.com/LucianoDeben/5LSM0-Final-Assignment.git",
+            "commit": "1c0e597bfcbec52d2a6e62b163af8e5beaf16be3"
+        },
+        "entrypoint": [
+            "python3",
+            "train.py"
+        ],
+        "notebook": false
+    },
+    "input_types": {
+        "wb_type": "typedDict",
+        "params": {
+            "type_map": {
+                "learning_rate": {
+                    "wb_type": "number"
+                },
+                "batch_size": {
+                    "wb_type": "number"
+                },
+                "num_epochs": {
+                    "wb_type": "number"
+                },
+                "num_workers": {
+                    "wb_type": "number"
+                },
+                "architecture": {
+                    "wb_type": "string"
+                },
+                "dataset": {
+                    "wb_type": "string"
+                },
+                "optimizer": {
+                    "wb_type": "string"
+                },
+                "scheduler": {
+                    "wb_type": "string"
+                },
+                "scheduler_step_size": {
+                    "wb_type": "number"
+                },
+                "scheduler_gamma": {
+                    "wb_type": "number"
+                }
+            }
+        }
+    },
+    "output_types": {
+        "wb_type": "typedDict",
+        "params": {
+            "type_map": {
+                "epoch": {
+                    "wb_type": "number"
+                },
+                "train_loss": {
+                    "wb_type": "number"
+                },
+                "train_acc": {
+                    "wb_type": "number"
+                },
+                "train_dice": {
+                    "wb_type": "number"
+                },
+                "_timestamp": {
+                    "wb_type": "number"
+                },
+                "_runtime": {
+                    "wb_type": "number"
+                },
+                "_step": {
+                    "wb_type": "number"
+                },
+                "val_loss": {
+                    "wb_type": "number"
+                },
+                "val_acc": {
+                    "wb_type": "number"
+                },
+                "val_dice": {
+                    "wb_type": "number"
+                },
+                "gradients/outputs.weight": {
+                    "wb_type": "typedDict",
+                    "params": {
+                        "type_map": {
+                            "_type": {
+                                "wb_type": "string"
+                            },
+                            "values": {
+                                "wb_type": "list",
+                                "params": {
+                                    "element_type": {
+                                        "wb_type": "number"
+                                    },
+                                    "length": 64
+                                }
+                            },
+                            "bins": {
+                                "wb_type": "list",
+                                "params": {
+                                    "element_type": {
+                                        "wb_type": "number"
+                                    },
+                                    "length": 65
+                                }
+                            }
+                        }
+                    }
+                },
+                "gradients/outputs.bias": {
+                    "wb_type": "typedDict",
+                    "params": {
+                        "type_map": {
+                            "_type": {
+                                "wb_type": "string"
+                            },
+                            "values": {
+                                "wb_type": "list",
+                                "params": {
+                                    "element_type": {
+                                        "wb_type": "number"
+                                    },
+                                    "length": 64
+                                }
+                            },
+                            "bins": {
+                                "wb_type": "list",
+                                "params": {
+                                    "element_type": {
+                                        "wb_type": "number"
+                                    },
+                                    "length": 65
+                                }
+                            }
+                        }
+                    }
+                },
+                "gradients/d4.conv.bn2.weight": {
+                    "wb_type": "typedDict",
+                    "params": {
+                        "type_map": {
+                            "_type": {
+                                "wb_type": "string"
+                            },
+                            "values": {
+                                "wb_type": "list",
+                                "params": {
+                                    "element_type": {
+                                        "wb_type": "number"
+                                    },
+                                    "length": 64
+                                }
+                            },
+                            "bins": {
+                                "wb_type": "list",
+                                "params": {
+                                    "element_type": {
+                                        "wb_type": "number"
+                                    },
+                                    "length": 65
+                                }
+                            }
+                        }
+                    }
+                },
+                "gradients/d4.conv.bn2.bias": {
+                    "wb_type": "typedDict",
+                    "params": {
+                        "type_map": {
+                            "_type": {
+                                "wb_type": "string"
+                            },
+                            "values": {
+                                "wb_type": "list",
+                                "params": {
+                                    "element_type": {
+                                        "wb_type": "number"
+                                    },
+                                    "length": 64
+                                }
+                            },
+                            "bins": {
+                                "wb_type": "list",
+                                "params": {
+                                    "element_type": {
+                                        "wb_type": "number"
+                                    },
+                                    "length": 65
+                                }
+                            }
+                        }
+                    }
+                },
+                "gradients/d4.conv.conv2.weight": {
+                    "wb_type": "typedDict",
+                    "params": {
+                        "type_map": {
+                            "_type": {
+                                "wb_type": "string"
+                            },
+                            "values": {
+                                "wb_type": "list",
+                                "params": {
+                                    "element_type": {
+                                        "wb_type": "number"
+                                    },
+                                    "length": 64
+                                }
+                            },
+                            "bins": {
+                                "wb_type": "list",
+                                "params": {
+                                    "element_type": {
+                                        "wb_type": "number"
+                                    },
+                                    "length": 65
+                                }
+                            }
+                        }
+                    }
+                },
+                "gradients/d4.conv.conv2.bias": {
+                    "wb_type": "typedDict",
+                    "params": {
+                        "type_map": {
+                            "_type": {
+                                "wb_type": "string"
+                            },
+                            "values": {
+                                "wb_type": "list",
+                                "params": {
+                                    "element_type": {
+                                        "wb_type": "number"
+                                    },
+                                    "length": 64
+                                }
+                            },
+                            "bins": {
+                                "wb_type": "list",
+                                "params": {
+                                    "element_type": {
+                                        "wb_type": "number"
+                                    },
+                                    "length": 65
+                                }
+                            }
+                        }
+                    }
+                },
+                "gradients/d4.conv.bn1.weight": {
+                    "wb_type": "typedDict",
+                    "params": {
+                        "type_map": {
+                            "_type": {
+                                "wb_type": "string"
+                            },
+                            "values": {
+                                "wb_type": "list",
+                                "params": {
+                                    "element_type": {
+                                        "wb_type": "number"
+                                    },
+                                    "length": 64
+                                }
+                            },
+                            "bins": {
+                                "wb_type": "list",
+                                "params": {
+                                    "element_type": {
+                                        "wb_type": "number"
+                                    },
+                                    "length": 65
+                                }
+                            }
+                        }
+                    }
+                },
+                "gradients/d4.conv.bn1.bias": {
+                    "wb_type": "typedDict",
+                    "params": {
+                        "type_map": {
+                            "_type": {
+                                "wb_type": "string"
+                            },
+                            "values": {
+                                "wb_type": "list",
+                                "params": {
+                                    "element_type": {
+                                        "wb_type": "number"
+                                    },
+                                    "length": 64
+                                }
+                            },
+                            "bins": {
+                                "wb_type": "list",
+                                "params": {
+                                    "element_type": {
+                                        "wb_type": "number"
+                                    },
+                                    "length": 65
+                                }
+                            }
+                        }
+                    }
+                },
+                "gradients/d4.conv.conv1.weight": {
+                    "wb_type": "typedDict",
+                    "params": {
+                        "type_map": {
+                            "_type": {
+                                "wb_type": "string"
+                            },
+                            "values": {
+                                "wb_type": "list",
+                                "params": {
+                                    "element_type": {
+                                        "wb_type": "number"
+                                    },
+                                    "length": 64
+                                }
+                            },
+                            "bins": {
+                                "wb_type": "list",
+                                "params": {
+                                    "element_type": {
+                                        "wb_type": "number"
+                                    },
+                                    "length": 65
+                                }
+                            }
+                        }
+                    }
+                },
+                "gradients/d4.conv.conv1.bias": {
+                    "wb_type": "typedDict",
+                    "params": {
+                        "type_map": {
+                            "_type": {
+                                "wb_type": "string"
+                            },
+                            "values": {
+                                "wb_type": "list",
+                                "params": {
+                                    "element_type": {
+                                        "wb_type": "number"
+                                    },
+                                    "length": 64
+                                }
+                            },
+                            "bins": {
+                                "wb_type": "list",
+                                "params": {
+                                    "element_type": {
+                                        "wb_type": "number"
+                                    },
+                                    "length": 65
+                                }
+                            }
+                        }
+                    }
+                },
+                "gradients/d4.up.weight": {
+                    "wb_type": "typedDict",
+                    "params": {
+                        "type_map": {
+                            "_type": {
+                                "wb_type": "string"
+                            },
+                            "values": {
+                                "wb_type": "list",
+                                "params": {
+                                    "element_type": {
+                                        "wb_type": "number"
+                                    },
+                                    "length": 64
+                                }
+                            },
+                            "bins": {
+                                "wb_type": "list",
+                                "params": {
+                                    "element_type": {
+                                        "wb_type": "number"
+                                    },
+                                    "length": 65
+                                }
+                            }
+                        }
+                    }
+                },
+                "gradients/d4.up.bias": {
+                    "wb_type": "typedDict",
+                    "params": {
+                        "type_map": {
+                            "_type": {
+                                "wb_type": "string"
+                            },
+                            "values": {
+                                "wb_type": "list",
+                                "params": {
+                                    "element_type": {
+                                        "wb_type": "number"
+                                    },
+                                    "length": 64
+                                }
+                            },
+                            "bins": {
+                                "wb_type": "list",
+                                "params": {
+                                    "element_type": {
+                                        "wb_type": "number"
+                                    },
+                                    "length": 65
+                                }
+                            }
+                        }
+                    }
+                },
+                "gradients/d3.conv.bn2.weight": {
+                    "wb_type": "typedDict",
+                    "params": {
+                        "type_map": {
+                            "_type": {
+                                "wb_type": "string"
+                            },
+                            "values": {
+                                "wb_type": "list",
+                                "params": {
+                                    "element_type": {
+                                        "wb_type": "number"
+                                    },
+                                    "length": 64
+                                }
+                            },
+                            "bins": {
+                                "wb_type": "list",
+                                "params": {
+                                    "element_type": {
+                                        "wb_type": "number"
+                                    },
+                                    "length": 65
+                                }
+                            }
+                        }
+                    }
+                },
+                "gradients/d3.conv.bn2.bias": {
+                    "wb_type": "typedDict",
+                    "params": {
+                        "type_map": {
+                            "_type": {
+                                "wb_type": "string"
+                            },
+                            "values": {
+                                "wb_type": "list",
+                                "params": {
+                                    "element_type": {
+                                        "wb_type": "number"
+                                    },
+                                    "length": 64
+                                }
+                            },
+                            "bins": {
+                                "wb_type": "list",
+                                "params": {
+                                    "element_type": {
+                                        "wb_type": "number"
+                                    },
+                                    "length": 65
+                                }
+                            }
+                        }
+                    }
+                },
+                "gradients/d3.conv.conv2.weight": {
+                    "wb_type": "typedDict",
+                    "params": {
+                        "type_map": {
+                            "_type": {
+                                "wb_type": "string"
+                            },
+                            "values": {
+                                "wb_type": "list",
+                                "params": {
+                                    "element_type": {
+                                        "wb_type": "number"
+                                    },
+                                    "length": 64
+                                }
+                            },
+                            "bins": {
+                                "wb_type": "list",
+                                "params": {
+                                    "element_type": {
+                                        "wb_type": "number"
+                                    },
+                                    "length": 65
+                                }
+                            }
+                        }
+                    }
+                },
+                "gradients/d3.conv.conv2.bias": {
+                    "wb_type": "typedDict",
+                    "params": {
+                        "type_map": {
+                            "_type": {
+                                "wb_type": "string"
+                            },
+                            "values": {
+                                "wb_type": "list",
+                                "params": {
+                                    "element_type": {
+                                        "wb_type": "number"
+                                    },
+                                    "length": 64
+                                }
+                            },
+                            "bins": {
+                                "wb_type": "list",
+                                "params": {
+                                    "element_type": {
+                                        "wb_type": "number"
+                                    },
+                                    "length": 65
+                                }
+                            }
+                        }
+                    }
+                },
+                "gradients/d3.conv.bn1.weight": {
+                    "wb_type": "typedDict",
+                    "params": {
+                        "type_map": {
+                            "_type": {
+                                "wb_type": "string"
+                            },
+                            "values": {
+                                "wb_type": "list",
+                                "params": {
+                                    "element_type": {
+                                        "wb_type": "number"
+                                    },
+                                    "length": 64
+                                }
+                            },
+                            "bins": {
+                                "wb_type": "list",
+                                "params": {
+                                    "element_type": {
+                                        "wb_type": "number"
+                                    },
+                                    "length": 65
+                                }
+                            }
+                        }
+                    }
+                },
+                "gradients/d3.conv.bn1.bias": {
+                    "wb_type": "typedDict",
+                    "params": {
+                        "type_map": {
+                            "_type": {
+                                "wb_type": "string"
+                            },
+                            "values": {
+                                "wb_type": "list",
+                                "params": {
+                                    "element_type": {
+                                        "wb_type": "number"
+                                    },
+                                    "length": 64
+                                }
+                            },
+                            "bins": {
+                                "wb_type": "list",
+                                "params": {
+                                    "element_type": {
+                                        "wb_type": "number"
+                                    },
+                                    "length": 65
+                                }
+                            }
+                        }
+                    }
+                },
+                "gradients/d3.conv.conv1.weight": {
+                    "wb_type": "typedDict",
+                    "params": {
+                        "type_map": {
+                            "_type": {
+                                "wb_type": "string"
+                            },
+                            "values": {
+                                "wb_type": "list",
+                                "params": {
+                                    "element_type": {
+                                        "wb_type": "number"
+                                    },
+                                    "length": 64
+                                }
+                            },
+                            "bins": {
+                                "wb_type": "list",
+                                "params": {
+                                    "element_type": {
+                                        "wb_type": "number"
+                                    },
+                                    "length": 65
+                                }
+                            }
+                        }
+                    }
+                },
+                "gradients/d3.conv.conv1.bias": {
+                    "wb_type": "typedDict",
+                    "params": {
+                        "type_map": {
+                            "_type": {
+                                "wb_type": "string"
+                            },
+                            "values": {
+                                "wb_type": "list",
+                                "params": {
+                                    "element_type": {
+                                        "wb_type": "number"
+                                    },
+                                    "length": 64
+                                }
+                            },
+                            "bins": {
+                                "wb_type": "list",
+                                "params": {
+                                    "element_type": {
+                                        "wb_type": "number"
+                                    },
+                                    "length": 65
+                                }
+                            }
+                        }
+                    }
+                },
+                "gradients/d3.up.weight": {
+                    "wb_type": "typedDict",
+                    "params": {
+                        "type_map": {
+                            "_type": {
+                                "wb_type": "string"
+                            },
+                            "values": {
+                                "wb_type": "list",
+                                "params": {
+                                    "element_type": {
+                                        "wb_type": "number"
+                                    },
+                                    "length": 64
+                                }
+                            },
+                            "bins": {
+                                "wb_type": "list",
+                                "params": {
+                                    "element_type": {
+                                        "wb_type": "number"
+                                    },
+                                    "length": 65
+                                }
+                            }
+                        }
+                    }
+                },
+                "gradients/d3.up.bias": {
+                    "wb_type": "typedDict",
+                    "params": {
+                        "type_map": {
+                            "_type": {
+                                "wb_type": "string"
+                            },
+                            "values": {
+                                "wb_type": "list",
+                                "params": {
+                                    "element_type": {
+                                        "wb_type": "number"
+                                    },
+                                    "length": 64
+                                }
+                            },
+                            "bins": {
+                                "wb_type": "list",
+                                "params": {
+                                    "element_type": {
+                                        "wb_type": "number"
+                                    },
+                                    "length": 65
+                                }
+                            }
+                        }
+                    }
+                },
+                "gradients/d2.conv.bn2.weight": {
+                    "wb_type": "typedDict",
+                    "params": {
+                        "type_map": {
+                            "_type": {
+                                "wb_type": "string"
+                            },
+                            "values": {
+                                "wb_type": "list",
+                                "params": {
+                                    "element_type": {
+                                        "wb_type": "number"
+                                    },
+                                    "length": 64
+                                }
+                            },
+                            "bins": {
+                                "wb_type": "list",
+                                "params": {
+                                    "element_type": {
+                                        "wb_type": "number"
+                                    },
+                                    "length": 65
+                                }
+                            }
+                        }
+                    }
+                },
+                "gradients/d2.conv.bn2.bias": {
+                    "wb_type": "typedDict",
+                    "params": {
+                        "type_map": {
+                            "_type": {
+                                "wb_type": "string"
+                            },
+                            "values": {
+                                "wb_type": "list",
+                                "params": {
+                                    "element_type": {
+                                        "wb_type": "number"
+                                    },
+                                    "length": 64
+                                }
+                            },
+                            "bins": {
+                                "wb_type": "list",
+                                "params": {
+                                    "element_type": {
+                                        "wb_type": "number"
+                                    },
+                                    "length": 65
+                                }
+                            }
+                        }
+                    }
+                },
+                "gradients/d2.conv.conv2.weight": {
+                    "wb_type": "typedDict",
+                    "params": {
+                        "type_map": {
+                            "_type": {
+                                "wb_type": "string"
+                            },
+                            "values": {
+                                "wb_type": "list",
+                                "params": {
+                                    "element_type": {
+                                        "wb_type": "number"
+                                    },
+                                    "length": 64
+                                }
+                            },
+                            "bins": {
+                                "wb_type": "list",
+                                "params": {
+                                    "element_type": {
+                                        "wb_type": "number"
+                                    },
+                                    "length": 65
+                                }
+                            }
+                        }
+                    }
+                },
+                "gradients/d2.conv.conv2.bias": {
+                    "wb_type": "typedDict",
+                    "params": {
+                        "type_map": {
+                            "_type": {
+                                "wb_type": "string"
+                            },
+                            "values": {
+                                "wb_type": "list",
+                                "params": {
+                                    "element_type": {
+                                        "wb_type": "number"
+                                    },
+                                    "length": 64
+                                }
+                            },
+                            "bins": {
+                                "wb_type": "list",
+                                "params": {
+                                    "element_type": {
+                                        "wb_type": "number"
+                                    },
+                                    "length": 65
+                                }
+                            }
+                        }
+                    }
+                },
+                "gradients/d2.conv.bn1.weight": {
+                    "wb_type": "typedDict",
+                    "params": {
+                        "type_map": {
+                            "_type": {
+                                "wb_type": "string"
+                            },
+                            "values": {
+                                "wb_type": "list",
+                                "params": {
+                                    "element_type": {
+                                        "wb_type": "number"
+                                    },
+                                    "length": 64
+                                }
+                            },
+                            "bins": {
+                                "wb_type": "list",
+                                "params": {
+                                    "element_type": {
+                                        "wb_type": "number"
+                                    },
+                                    "length": 65
+                                }
+                            }
+                        }
+                    }
+                },
+                "gradients/d2.conv.bn1.bias": {
+                    "wb_type": "typedDict",
+                    "params": {
+                        "type_map": {
+                            "_type": {
+                                "wb_type": "string"
+                            },
+                            "values": {
+                                "wb_type": "list",
+                                "params": {
+                                    "element_type": {
+                                        "wb_type": "number"
+                                    },
+                                    "length": 64
+                                }
+                            },
+                            "bins": {
+                                "wb_type": "list",
+                                "params": {
+                                    "element_type": {
+                                        "wb_type": "number"
+                                    },
+                                    "length": 65
+                                }
+                            }
+                        }
+                    }
+                },
+                "gradients/d2.conv.conv1.weight": {
+                    "wb_type": "typedDict",
+                    "params": {
+                        "type_map": {
+                            "_type": {
+                                "wb_type": "string"
+                            },
+                            "values": {
+                                "wb_type": "list",
+                                "params": {
+                                    "element_type": {
+                                        "wb_type": "number"
+                                    },
+                                    "length": 64
+                                }
+                            },
+                            "bins": {
+                                "wb_type": "list",
+                                "params": {
+                                    "element_type": {
+                                        "wb_type": "number"
+                                    },
+                                    "length": 65
+                                }
+                            }
+                        }
+                    }
+                },
+                "gradients/d2.conv.conv1.bias": {
+                    "wb_type": "typedDict",
+                    "params": {
+                        "type_map": {
+                            "_type": {
+                                "wb_type": "string"
+                            },
+                            "values": {
+                                "wb_type": "list",
+                                "params": {
+                                    "element_type": {
+                                        "wb_type": "number"
+                                    },
+                                    "length": 64
+                                }
+                            },
+                            "bins": {
+                                "wb_type": "list",
+                                "params": {
+                                    "element_type": {
+                                        "wb_type": "number"
+                                    },
+                                    "length": 65
+                                }
+                            }
+                        }
+                    }
+                },
+                "gradients/d2.up.weight": {
+                    "wb_type": "typedDict",
+                    "params": {
+                        "type_map": {
+                            "_type": {
+                                "wb_type": "string"
+                            },
+                            "values": {
+                                "wb_type": "list",
+                                "params": {
+                                    "element_type": {
+                                        "wb_type": "number"
+                                    },
+                                    "length": 64
+                                }
+                            },
+                            "bins": {
+                                "wb_type": "list",
+                                "params": {
+                                    "element_type": {
+                                        "wb_type": "number"
+                                    },
+                                    "length": 65
+                                }
+                            }
+                        }
+                    }
+                },
+                "gradients/d2.up.bias": {
+                    "wb_type": "typedDict",
+                    "params": {
+                        "type_map": {
+                            "_type": {
+                                "wb_type": "string"
+                            },
+                            "values": {
+                                "wb_type": "list",
+                                "params": {
+                                    "element_type": {
+                                        "wb_type": "number"
+                                    },
+                                    "length": 64
+                                }
+                            },
+                            "bins": {
+                                "wb_type": "list",
+                                "params": {
+                                    "element_type": {
+                                        "wb_type": "number"
+                                    },
+                                    "length": 65
+                                }
+                            }
+                        }
+                    }
+                },
+                "gradients/d1.conv.bn2.weight": {
+                    "wb_type": "typedDict",
+                    "params": {
+                        "type_map": {
+                            "_type": {
+                                "wb_type": "string"
+                            },
+                            "values": {
+                                "wb_type": "list",
+                                "params": {
+                                    "element_type": {
+                                        "wb_type": "number"
+                                    },
+                                    "length": 64
+                                }
+                            },
+                            "bins": {
+                                "wb_type": "list",
+                                "params": {
+                                    "element_type": {
+                                        "wb_type": "number"
+                                    },
+                                    "length": 65
+                                }
+                            }
+                        }
+                    }
+                },
+                "gradients/d1.conv.bn2.bias": {
+                    "wb_type": "typedDict",
+                    "params": {
+                        "type_map": {
+                            "_type": {
+                                "wb_type": "string"
+                            },
+                            "values": {
+                                "wb_type": "list",
+                                "params": {
+                                    "element_type": {
+                                        "wb_type": "number"
+                                    },
+                                    "length": 64
+                                }
+                            },
+                            "bins": {
+                                "wb_type": "list",
+                                "params": {
+                                    "element_type": {
+                                        "wb_type": "number"
+                                    },
+                                    "length": 65
+                                }
+                            }
+                        }
+                    }
+                },
+                "gradients/d1.conv.conv2.weight": {
+                    "wb_type": "typedDict",
+                    "params": {
+                        "type_map": {
+                            "_type": {
+                                "wb_type": "string"
+                            },
+                            "values": {
+                                "wb_type": "list",
+                                "params": {
+                                    "element_type": {
+                                        "wb_type": "number"
+                                    },
+                                    "length": 64
+                                }
+                            },
+                            "bins": {
+                                "wb_type": "list",
+                                "params": {
+                                    "element_type": {
+                                        "wb_type": "number"
+                                    },
+                                    "length": 65
+                                }
+                            }
+                        }
+                    }
+                },
+                "gradients/d1.conv.conv2.bias": {
+                    "wb_type": "typedDict",
+                    "params": {
+                        "type_map": {
+                            "_type": {
+                                "wb_type": "string"
+                            },
+                            "values": {
+                                "wb_type": "list",
+                                "params": {
+                                    "element_type": {
+                                        "wb_type": "number"
+                                    },
+                                    "length": 64
+                                }
+                            },
+                            "bins": {
+                                "wb_type": "list",
+                                "params": {
+                                    "element_type": {
+                                        "wb_type": "number"
+                                    },
+                                    "length": 65
+                                }
+                            }
+                        }
+                    }
+                },
+                "gradients/d1.conv.bn1.weight": {
+                    "wb_type": "typedDict",
+                    "params": {
+                        "type_map": {
+                            "_type": {
+                                "wb_type": "string"
+                            },
+                            "values": {
+                                "wb_type": "list",
+                                "params": {
+                                    "element_type": {
+                                        "wb_type": "number"
+                                    },
+                                    "length": 64
+                                }
+                            },
+                            "bins": {
+                                "wb_type": "list",
+                                "params": {
+                                    "element_type": {
+                                        "wb_type": "number"
+                                    },
+                                    "length": 65
+                                }
+                            }
+                        }
+                    }
+                },
+                "gradients/d1.conv.bn1.bias": {
+                    "wb_type": "typedDict",
+                    "params": {
+                        "type_map": {
+                            "_type": {
+                                "wb_type": "string"
+                            },
+                            "values": {
+                                "wb_type": "list",
+                                "params": {
+                                    "element_type": {
+                                        "wb_type": "number"
+                                    },
+                                    "length": 64
+                                }
+                            },
+                            "bins": {
+                                "wb_type": "list",
+                                "params": {
+                                    "element_type": {
+                                        "wb_type": "number"
+                                    },
+                                    "length": 65
+                                }
+                            }
+                        }
+                    }
+                },
+                "gradients/d1.conv.conv1.weight": {
+                    "wb_type": "typedDict",
+                    "params": {
+                        "type_map": {
+                            "_type": {
+                                "wb_type": "string"
+                            },
+                            "values": {
+                                "wb_type": "list",
+                                "params": {
+                                    "element_type": {
+                                        "wb_type": "number"
+                                    },
+                                    "length": 64
+                                }
+                            },
+                            "bins": {
+                                "wb_type": "list",
+                                "params": {
+                                    "element_type": {
+                                        "wb_type": "number"
+                                    },
+                                    "length": 65
+                                }
+                            }
+                        }
+                    }
+                },
+                "gradients/d1.conv.conv1.bias": {
+                    "wb_type": "typedDict",
+                    "params": {
+                        "type_map": {
+                            "_type": {
+                                "wb_type": "string"
+                            },
+                            "values": {
+                                "wb_type": "list",
+                                "params": {
+                                    "element_type": {
+                                        "wb_type": "number"
+                                    },
+                                    "length": 64
+                                }
+                            },
+                            "bins": {
+                                "wb_type": "list",
+                                "params": {
+                                    "element_type": {
+                                        "wb_type": "number"
+                                    },
+                                    "length": 65
+                                }
+                            }
+                        }
+                    }
+                },
+                "gradients/d1.up.weight": {
+                    "wb_type": "typedDict",
+                    "params": {
+                        "type_map": {
+                            "_type": {
+                                "wb_type": "string"
+                            },
+                            "values": {
+                                "wb_type": "list",
+                                "params": {
+                                    "element_type": {
+                                        "wb_type": "number"
+                                    },
+                                    "length": 64
+                                }
+                            },
+                            "bins": {
+                                "wb_type": "list",
+                                "params": {
+                                    "element_type": {
+                                        "wb_type": "number"
+                                    },
+                                    "length": 65
+                                }
+                            }
+                        }
+                    }
+                },
+                "gradients/d1.up.bias": {
+                    "wb_type": "typedDict",
+                    "params": {
+                        "type_map": {
+                            "_type": {
+                                "wb_type": "string"
+                            },
+                            "values": {
+                                "wb_type": "list",
+                                "params": {
+                                    "element_type": {
+                                        "wb_type": "number"
+                                    },
+                                    "length": 64
+                                }
+                            },
+                            "bins": {
+                                "wb_type": "list",
+                                "params": {
+                                    "element_type": {
+                                        "wb_type": "number"
+                                    },
+                                    "length": 65
+                                }
+                            }
+                        }
+                    }
+                },
+                "gradients/b.bn2.weight": {
+                    "wb_type": "typedDict",
+                    "params": {
+                        "type_map": {
+                            "_type": {
+                                "wb_type": "string"
+                            },
+                            "values": {
+                                "wb_type": "list",
+                                "params": {
+                                    "element_type": {
+                                        "wb_type": "number"
+                                    },
+                                    "length": 64
+                                }
+                            },
+                            "bins": {
+                                "wb_type": "list",
+                                "params": {
+                                    "element_type": {
+                                        "wb_type": "number"
+                                    },
+                                    "length": 65
+                                }
+                            }
+                        }
+                    }
+                },
+                "gradients/b.bn2.bias": {
+                    "wb_type": "typedDict",
+                    "params": {
+                        "type_map": {
+                            "_type": {
+                                "wb_type": "string"
+                            },
+                            "values": {
+                                "wb_type": "list",
+                                "params": {
+                                    "element_type": {
+                                        "wb_type": "number"
+                                    },
+                                    "length": 64
+                                }
+                            },
+                            "bins": {
+                                "wb_type": "list",
+                                "params": {
+                                    "element_type": {
+                                        "wb_type": "number"
+                                    },
+                                    "length": 65
+                                }
+                            }
+                        }
+                    }
+                },
+                "gradients/b.conv2.weight": {
+                    "wb_type": "typedDict",
+                    "params": {
+                        "type_map": {
+                            "_type": {
+                                "wb_type": "string"
+                            },
+                            "values": {
+                                "wb_type": "list",
+                                "params": {
+                                    "element_type": {
+                                        "wb_type": "number"
+                                    },
+                                    "length": 64
+                                }
+                            },
+                            "bins": {
+                                "wb_type": "list",
+                                "params": {
+                                    "element_type": {
+                                        "wb_type": "number"
+                                    },
+                                    "length": 65
+                                }
+                            }
+                        }
+                    }
+                },
+                "gradients/b.conv2.bias": {
+                    "wb_type": "typedDict",
+                    "params": {
+                        "type_map": {
+                            "_type": {
+                                "wb_type": "string"
+                            },
+                            "values": {
+                                "wb_type": "list",
+                                "params": {
+                                    "element_type": {
+                                        "wb_type": "number"
+                                    },
+                                    "length": 64
+                                }
+                            },
+                            "bins": {
+                                "wb_type": "list",
+                                "params": {
+                                    "element_type": {
+                                        "wb_type": "number"
+                                    },
+                                    "length": 65
+                                }
+                            }
+                        }
+                    }
+                },
+                "gradients/b.bn1.weight": {
+                    "wb_type": "typedDict",
+                    "params": {
+                        "type_map": {
+                            "_type": {
+                                "wb_type": "string"
+                            },
+                            "values": {
+                                "wb_type": "list",
+                                "params": {
+                                    "element_type": {
+                                        "wb_type": "number"
+                                    },
+                                    "length": 64
+                                }
+                            },
+                            "bins": {
+                                "wb_type": "list",
+                                "params": {
+                                    "element_type": {
+                                        "wb_type": "number"
+                                    },
+                                    "length": 65
+                                }
+                            }
+                        }
+                    }
+                },
+                "gradients/b.bn1.bias": {
+                    "wb_type": "typedDict",
+                    "params": {
+                        "type_map": {
+                            "_type": {
+                                "wb_type": "string"
+                            },
+                            "values": {
+                                "wb_type": "list",
+                                "params": {
+                                    "element_type": {
+                                        "wb_type": "number"
+                                    },
+                                    "length": 64
+                                }
+                            },
+                            "bins": {
+                                "wb_type": "list",
+                                "params": {
+                                    "element_type": {
+                                        "wb_type": "number"
+                                    },
+                                    "length": 65
+                                }
+                            }
+                        }
+                    }
+                },
+                "gradients/b.conv1.weight": {
+                    "wb_type": "typedDict",
+                    "params": {
+                        "type_map": {
+                            "_type": {
+                                "wb_type": "string"
+                            },
+                            "values": {
+                                "wb_type": "list",
+                                "params": {
+                                    "element_type": {
+                                        "wb_type": "number"
+                                    },
+                                    "length": 64
+                                }
+                            },
+                            "bins": {
+                                "wb_type": "list",
+                                "params": {
+                                    "element_type": {
+                                        "wb_type": "number"
+                                    },
+                                    "length": 65
+                                }
+                            }
+                        }
+                    }
+                },
+                "gradients/b.conv1.bias": {
+                    "wb_type": "typedDict",
+                    "params": {
+                        "type_map": {
+                            "_type": {
+                                "wb_type": "string"
+                            },
+                            "values": {
+                                "wb_type": "list",
+                                "params": {
+                                    "element_type": {
+                                        "wb_type": "number"
+                                    },
+                                    "length": 64
+                                }
+                            },
+                            "bins": {
+                                "wb_type": "list",
+                                "params": {
+                                    "element_type": {
+                                        "wb_type": "number"
+                                    },
+                                    "length": 65
+                                }
+                            }
+                        }
+                    }
+                },
+                "gradients/e4.conv.bn2.weight": {
+                    "wb_type": "typedDict",
+                    "params": {
+                        "type_map": {
+                            "_type": {
+                                "wb_type": "string"
+                            },
+                            "values": {
+                                "wb_type": "list",
+                                "params": {
+                                    "element_type": {
+                                        "wb_type": "number"
+                                    },
+                                    "length": 64
+                                }
+                            },
+                            "bins": {
+                                "wb_type": "list",
+                                "params": {
+                                    "element_type": {
+                                        "wb_type": "number"
+                                    },
+                                    "length": 65
+                                }
+                            }
+                        }
+                    }
+                },
+                "gradients/e4.conv.bn2.bias": {
+                    "wb_type": "typedDict",
+                    "params": {
+                        "type_map": {
+                            "_type": {
+                                "wb_type": "string"
+                            },
+                            "values": {
+                                "wb_type": "list",
+                                "params": {
+                                    "element_type": {
+                                        "wb_type": "number"
+                                    },
+                                    "length": 64
+                                }
+                            },
+                            "bins": {
+                                "wb_type": "list",
+                                "params": {
+                                    "element_type": {
+                                        "wb_type": "number"
+                                    },
+                                    "length": 65
+                                }
+                            }
+                        }
+                    }
+                },
+                "gradients/e4.conv.conv2.weight": {
+                    "wb_type": "typedDict",
+                    "params": {
+                        "type_map": {
+                            "_type": {
+                                "wb_type": "string"
+                            },
+                            "values": {
+                                "wb_type": "list",
+                                "params": {
+                                    "element_type": {
+                                        "wb_type": "number"
+                                    },
+                                    "length": 64
+                                }
+                            },
+                            "bins": {
+                                "wb_type": "list",
+                                "params": {
+                                    "element_type": {
+                                        "wb_type": "number"
+                                    },
+                                    "length": 65
+                                }
+                            }
+                        }
+                    }
+                },
+                "gradients/e4.conv.conv2.bias": {
+                    "wb_type": "typedDict",
+                    "params": {
+                        "type_map": {
+                            "_type": {
+                                "wb_type": "string"
+                            },
+                            "values": {
+                                "wb_type": "list",
+                                "params": {
+                                    "element_type": {
+                                        "wb_type": "number"
+                                    },
+                                    "length": 64
+                                }
+                            },
+                            "bins": {
+                                "wb_type": "list",
+                                "params": {
+                                    "element_type": {
+                                        "wb_type": "number"
+                                    },
+                                    "length": 65
+                                }
+                            }
+                        }
+                    }
+                },
+                "gradients/e4.conv.bn1.weight": {
+                    "wb_type": "typedDict",
+                    "params": {
+                        "type_map": {
+                            "_type": {
+                                "wb_type": "string"
+                            },
+                            "values": {
+                                "wb_type": "list",
+                                "params": {
+                                    "element_type": {
+                                        "wb_type": "number"
+                                    },
+                                    "length": 64
+                                }
+                            },
+                            "bins": {
+                                "wb_type": "list",
+                                "params": {
+                                    "element_type": {
+                                        "wb_type": "number"
+                                    },
+                                    "length": 65
+                                }
+                            }
+                        }
+                    }
+                },
+                "gradients/e4.conv.bn1.bias": {
+                    "wb_type": "typedDict",
+                    "params": {
+                        "type_map": {
+                            "_type": {
+                                "wb_type": "string"
+                            },
+                            "values": {
+                                "wb_type": "list",
+                                "params": {
+                                    "element_type": {
+                                        "wb_type": "number"
+                                    },
+                                    "length": 64
+                                }
+                            },
+                            "bins": {
+                                "wb_type": "list",
+                                "params": {
+                                    "element_type": {
+                                        "wb_type": "number"
+                                    },
+                                    "length": 65
+                                }
+                            }
+                        }
+                    }
+                },
+                "gradients/e4.conv.conv1.weight": {
+                    "wb_type": "typedDict",
+                    "params": {
+                        "type_map": {
+                            "_type": {
+                                "wb_type": "string"
+                            },
+                            "values": {
+                                "wb_type": "list",
+                                "params": {
+                                    "element_type": {
+                                        "wb_type": "number"
+                                    },
+                                    "length": 64
+                                }
+                            },
+                            "bins": {
+                                "wb_type": "list",
+                                "params": {
+                                    "element_type": {
+                                        "wb_type": "number"
+                                    },
+                                    "length": 65
+                                }
+                            }
+                        }
+                    }
+                },
+                "gradients/e4.conv.conv1.bias": {
+                    "wb_type": "typedDict",
+                    "params": {
+                        "type_map": {
+                            "_type": {
+                                "wb_type": "string"
+                            },
+                            "values": {
+                                "wb_type": "list",
+                                "params": {
+                                    "element_type": {
+                                        "wb_type": "number"
+                                    },
+                                    "length": 64
+                                }
+                            },
+                            "bins": {
+                                "wb_type": "list",
+                                "params": {
+                                    "element_type": {
+                                        "wb_type": "number"
+                                    },
+                                    "length": 65
+                                }
+                            }
+                        }
+                    }
+                },
+                "gradients/e3.conv.bn2.weight": {
+                    "wb_type": "typedDict",
+                    "params": {
+                        "type_map": {
+                            "_type": {
+                                "wb_type": "string"
+                            },
+                            "values": {
+                                "wb_type": "list",
+                                "params": {
+                                    "element_type": {
+                                        "wb_type": "number"
+                                    },
+                                    "length": 64
+                                }
+                            },
+                            "bins": {
+                                "wb_type": "list",
+                                "params": {
+                                    "element_type": {
+                                        "wb_type": "number"
+                                    },
+                                    "length": 65
+                                }
+                            }
+                        }
+                    }
+                },
+                "gradients/e3.conv.bn2.bias": {
+                    "wb_type": "typedDict",
+                    "params": {
+                        "type_map": {
+                            "_type": {
+                                "wb_type": "string"
+                            },
+                            "values": {
+                                "wb_type": "list",
+                                "params": {
+                                    "element_type": {
+                                        "wb_type": "number"
+                                    },
+                                    "length": 64
+                                }
+                            },
+                            "bins": {
+                                "wb_type": "list",
+                                "params": {
+                                    "element_type": {
+                                        "wb_type": "number"
+                                    },
+                                    "length": 65
+                                }
+                            }
+                        }
+                    }
+                },
+                "gradients/e3.conv.conv2.weight": {
+                    "wb_type": "typedDict",
+                    "params": {
+                        "type_map": {
+                            "_type": {
+                                "wb_type": "string"
+                            },
+                            "values": {
+                                "wb_type": "list",
+                                "params": {
+                                    "element_type": {
+                                        "wb_type": "number"
+                                    },
+                                    "length": 64
+                                }
+                            },
+                            "bins": {
+                                "wb_type": "list",
+                                "params": {
+                                    "element_type": {
+                                        "wb_type": "number"
+                                    },
+                                    "length": 65
+                                }
+                            }
+                        }
+                    }
+                },
+                "gradients/e3.conv.conv2.bias": {
+                    "wb_type": "typedDict",
+                    "params": {
+                        "type_map": {
+                            "_type": {
+                                "wb_type": "string"
+                            },
+                            "values": {
+                                "wb_type": "list",
+                                "params": {
+                                    "element_type": {
+                                        "wb_type": "number"
+                                    },
+                                    "length": 64
+                                }
+                            },
+                            "bins": {
+                                "wb_type": "list",
+                                "params": {
+                                    "element_type": {
+                                        "wb_type": "number"
+                                    },
+                                    "length": 65
+                                }
+                            }
+                        }
+                    }
+                },
+                "gradients/e3.conv.bn1.weight": {
+                    "wb_type": "typedDict",
+                    "params": {
+                        "type_map": {
+                            "_type": {
+                                "wb_type": "string"
+                            },
+                            "values": {
+                                "wb_type": "list",
+                                "params": {
+                                    "element_type": {
+                                        "wb_type": "number"
+                                    },
+                                    "length": 64
+                                }
+                            },
+                            "bins": {
+                                "wb_type": "list",
+                                "params": {
+                                    "element_type": {
+                                        "wb_type": "number"
+                                    },
+                                    "length": 65
+                                }
+                            }
+                        }
+                    }
+                },
+                "gradients/e3.conv.bn1.bias": {
+                    "wb_type": "typedDict",
+                    "params": {
+                        "type_map": {
+                            "_type": {
+                                "wb_type": "string"
+                            },
+                            "values": {
+                                "wb_type": "list",
+                                "params": {
+                                    "element_type": {
+                                        "wb_type": "number"
+                                    },
+                                    "length": 64
+                                }
+                            },
+                            "bins": {
+                                "wb_type": "list",
+                                "params": {
+                                    "element_type": {
+                                        "wb_type": "number"
+                                    },
+                                    "length": 65
+                                }
+                            }
+                        }
+                    }
+                },
+                "gradients/e3.conv.conv1.weight": {
+                    "wb_type": "typedDict",
+                    "params": {
+                        "type_map": {
+                            "_type": {
+                                "wb_type": "string"
+                            },
+                            "values": {
+                                "wb_type": "list",
+                                "params": {
+                                    "element_type": {
+                                        "wb_type": "number"
+                                    },
+                                    "length": 64
+                                }
+                            },
+                            "bins": {
+                                "wb_type": "list",
+                                "params": {
+                                    "element_type": {
+                                        "wb_type": "number"
+                                    },
+                                    "length": 65
+                                }
+                            }
+                        }
+                    }
+                },
+                "gradients/e3.conv.conv1.bias": {
+                    "wb_type": "typedDict",
+                    "params": {
+                        "type_map": {
+                            "_type": {
+                                "wb_type": "string"
+                            },
+                            "values": {
+                                "wb_type": "list",
+                                "params": {
+                                    "element_type": {
+                                        "wb_type": "number"
+                                    },
+                                    "length": 64
+                                }
+                            },
+                            "bins": {
+                                "wb_type": "list",
+                                "params": {
+                                    "element_type": {
+                                        "wb_type": "number"
+                                    },
+                                    "length": 65
+                                }
+                            }
+                        }
+                    }
+                },
+                "gradients/e2.conv.bn2.weight": {
+                    "wb_type": "typedDict",
+                    "params": {
+                        "type_map": {
+                            "_type": {
+                                "wb_type": "string"
+                            },
+                            "values": {
+                                "wb_type": "list",
+                                "params": {
+                                    "element_type": {
+                                        "wb_type": "number"
+                                    },
+                                    "length": 64
+                                }
+                            },
+                            "bins": {
+                                "wb_type": "list",
+                                "params": {
+                                    "element_type": {
+                                        "wb_type": "number"
+                                    },
+                                    "length": 65
+                                }
+                            }
+                        }
+                    }
+                },
+                "gradients/e2.conv.bn2.bias": {
+                    "wb_type": "typedDict",
+                    "params": {
+                        "type_map": {
+                            "_type": {
+                                "wb_type": "string"
+                            },
+                            "values": {
+                                "wb_type": "list",
+                                "params": {
+                                    "element_type": {
+                                        "wb_type": "number"
+                                    },
+                                    "length": 64
+                                }
+                            },
+                            "bins": {
+                                "wb_type": "list",
+                                "params": {
+                                    "element_type": {
+                                        "wb_type": "number"
+                                    },
+                                    "length": 65
+                                }
+                            }
+                        }
+                    }
+                },
+                "gradients/e2.conv.conv2.weight": {
+                    "wb_type": "typedDict",
+                    "params": {
+                        "type_map": {
+                            "_type": {
+                                "wb_type": "string"
+                            },
+                            "values": {
+                                "wb_type": "list",
+                                "params": {
+                                    "element_type": {
+                                        "wb_type": "number"
+                                    },
+                                    "length": 64
+                                }
+                            },
+                            "bins": {
+                                "wb_type": "list",
+                                "params": {
+                                    "element_type": {
+                                        "wb_type": "number"
+                                    },
+                                    "length": 65
+                                }
+                            }
+                        }
+                    }
+                },
+                "gradients/e2.conv.conv2.bias": {
+                    "wb_type": "typedDict",
+                    "params": {
+                        "type_map": {
+                            "_type": {
+                                "wb_type": "string"
+                            },
+                            "values": {
+                                "wb_type": "list",
+                                "params": {
+                                    "element_type": {
+                                        "wb_type": "number"
+                                    },
+                                    "length": 64
+                                }
+                            },
+                            "bins": {
+                                "wb_type": "list",
+                                "params": {
+                                    "element_type": {
+                                        "wb_type": "number"
+                                    },
+                                    "length": 65
+                                }
+                            }
+                        }
+                    }
+                },
+                "gradients/e2.conv.bn1.weight": {
+                    "wb_type": "typedDict",
+                    "params": {
+                        "type_map": {
+                            "_type": {
+                                "wb_type": "string"
+                            },
+                            "values": {
+                                "wb_type": "list",
+                                "params": {
+                                    "element_type": {
+                                        "wb_type": "number"
+                                    },
+                                    "length": 64
+                                }
+                            },
+                            "bins": {
+                                "wb_type": "list",
+                                "params": {
+                                    "element_type": {
+                                        "wb_type": "number"
+                                    },
+                                    "length": 65
+                                }
+                            }
+                        }
+                    }
+                },
+                "gradients/e2.conv.bn1.bias": {
+                    "wb_type": "typedDict",
+                    "params": {
+                        "type_map": {
+                            "_type": {
+                                "wb_type": "string"
+                            },
+                            "values": {
+                                "wb_type": "list",
+                                "params": {
+                                    "element_type": {
+                                        "wb_type": "number"
+                                    },
+                                    "length": 64
+                                }
+                            },
+                            "bins": {
+                                "wb_type": "list",
+                                "params": {
+                                    "element_type": {
+                                        "wb_type": "number"
+                                    },
+                                    "length": 65
+                                }
+                            }
+                        }
+                    }
+                },
+                "gradients/e2.conv.conv1.weight": {
+                    "wb_type": "typedDict",
+                    "params": {
+                        "type_map": {
+                            "_type": {
+                                "wb_type": "string"
+                            },
+                            "values": {
+                                "wb_type": "list",
+                                "params": {
+                                    "element_type": {
+                                        "wb_type": "number"
+                                    },
+                                    "length": 64
+                                }
+                            },
+                            "bins": {
+                                "wb_type": "list",
+                                "params": {
+                                    "element_type": {
+                                        "wb_type": "number"
+                                    },
+                                    "length": 65
+                                }
+                            }
+                        }
+                    }
+                },
+                "gradients/e2.conv.conv1.bias": {
+                    "wb_type": "typedDict",
+                    "params": {
+                        "type_map": {
+                            "_type": {
+                                "wb_type": "string"
+                            },
+                            "values": {
+                                "wb_type": "list",
+                                "params": {
+                                    "element_type": {
+                                        "wb_type": "number"
+                                    },
+                                    "length": 64
+                                }
+                            },
+                            "bins": {
+                                "wb_type": "list",
+                                "params": {
+                                    "element_type": {
+                                        "wb_type": "number"
+                                    },
+                                    "length": 65
+                                }
+                            }
+                        }
+                    }
+                },
+                "gradients/e1.conv.bn2.weight": {
+                    "wb_type": "typedDict",
+                    "params": {
+                        "type_map": {
+                            "_type": {
+                                "wb_type": "string"
+                            },
+                            "values": {
+                                "wb_type": "list",
+                                "params": {
+                                    "element_type": {
+                                        "wb_type": "number"
+                                    },
+                                    "length": 64
+                                }
+                            },
+                            "bins": {
+                                "wb_type": "list",
+                                "params": {
+                                    "element_type": {
+                                        "wb_type": "number"
+                                    },
+                                    "length": 65
+                                }
+                            }
+                        }
+                    }
+                },
+                "gradients/e1.conv.bn2.bias": {
+                    "wb_type": "typedDict",
+                    "params": {
+                        "type_map": {
+                            "_type": {
+                                "wb_type": "string"
+                            },
+                            "values": {
+                                "wb_type": "list",
+                                "params": {
+                                    "element_type": {
+                                        "wb_type": "number"
+                                    },
+                                    "length": 64
+                                }
+                            },
+                            "bins": {
+                                "wb_type": "list",
+                                "params": {
+                                    "element_type": {
+                                        "wb_type": "number"
+                                    },
+                                    "length": 65
+                                }
+                            }
+                        }
+                    }
+                },
+                "gradients/e1.conv.conv2.weight": {
+                    "wb_type": "typedDict",
+                    "params": {
+                        "type_map": {
+                            "_type": {
+                                "wb_type": "string"
+                            },
+                            "values": {
+                                "wb_type": "list",
+                                "params": {
+                                    "element_type": {
+                                        "wb_type": "number"
+                                    },
+                                    "length": 64
+                                }
+                            },
+                            "bins": {
+                                "wb_type": "list",
+                                "params": {
+                                    "element_type": {
+                                        "wb_type": "number"
+                                    },
+                                    "length": 65
+                                }
+                            }
+                        }
+                    }
+                },
+                "gradients/e1.conv.conv2.bias": {
+                    "wb_type": "typedDict",
+                    "params": {
+                        "type_map": {
+                            "_type": {
+                                "wb_type": "string"
+                            },
+                            "values": {
+                                "wb_type": "list",
+                                "params": {
+                                    "element_type": {
+                                        "wb_type": "number"
+                                    },
+                                    "length": 64
+                                }
+                            },
+                            "bins": {
+                                "wb_type": "list",
+                                "params": {
+                                    "element_type": {
+                                        "wb_type": "number"
+                                    },
+                                    "length": 65
+                                }
+                            }
+                        }
+                    }
+                },
+                "gradients/e1.conv.bn1.weight": {
+                    "wb_type": "typedDict",
+                    "params": {
+                        "type_map": {
+                            "_type": {
+                                "wb_type": "string"
+                            },
+                            "values": {
+                                "wb_type": "list",
+                                "params": {
+                                    "element_type": {
+                                        "wb_type": "number"
+                                    },
+                                    "length": 64
+                                }
+                            },
+                            "bins": {
+                                "wb_type": "list",
+                                "params": {
+                                    "element_type": {
+                                        "wb_type": "number"
+                                    },
+                                    "length": 65
+                                }
+                            }
+                        }
+                    }
+                },
+                "gradients/e1.conv.bn1.bias": {
+                    "wb_type": "typedDict",
+                    "params": {
+                        "type_map": {
+                            "_type": {
+                                "wb_type": "string"
+                            },
+                            "values": {
+                                "wb_type": "list",
+                                "params": {
+                                    "element_type": {
+                                        "wb_type": "number"
+                                    },
+                                    "length": 64
+                                }
+                            },
+                            "bins": {
+                                "wb_type": "list",
+                                "params": {
+                                    "element_type": {
+                                        "wb_type": "number"
+                                    },
+                                    "length": 65
+                                }
+                            }
+                        }
+                    }
+                },
+                "gradients/e1.conv.conv1.weight": {
+                    "wb_type": "typedDict",
+                    "params": {
+                        "type_map": {
+                            "_type": {
+                                "wb_type": "string"
+                            },
+                            "values": {
+                                "wb_type": "list",
+                                "params": {
+                                    "element_type": {
+                                        "wb_type": "number"
+                                    },
+                                    "length": 64
+                                }
+                            },
+                            "bins": {
+                                "wb_type": "list",
+                                "params": {
+                                    "element_type": {
+                                        "wb_type": "number"
+                                    },
+                                    "length": 65
+                                }
+                            }
+                        }
+                    }
+                },
+                "gradients/e1.conv.conv1.bias": {
+                    "wb_type": "typedDict",
+                    "params": {
+                        "type_map": {
+                            "_type": {
+                                "wb_type": "string"
+                            },
+                            "values": {
+                                "wb_type": "list",
+                                "params": {
+                                    "element_type": {
+                                        "wb_type": "number"
+                                    },
+                                    "length": 64
+                                }
+                            },
+                            "bins": {
+                                "wb_type": "list",
+                                "params": {
+                                    "element_type": {
+                                        "wb_type": "number"
+                                    },
+                                    "length": 65
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    },
+    "runtime": "3.10.12"
+}
