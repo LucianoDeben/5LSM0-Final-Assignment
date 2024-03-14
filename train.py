@@ -23,7 +23,6 @@ from config import config
 from metrics import dice_coefficient, mean_iou, pixel_accuracy
 from model import Model
 
-DATA_PATH = "data/Cityscapes"
 
 def get_arg_parser():
     parser = ArgumentParser()
@@ -168,7 +167,7 @@ def main(args):
     # wandb.save("model/model.onnx")
     
     # Save model
-    torch.save(model.state_dict(), "models/unet-model.pth")
+    torch.save(model.state_dict(), "./unet-model.pth")
 
 if __name__ == "__main__":
     # Get the arguments
