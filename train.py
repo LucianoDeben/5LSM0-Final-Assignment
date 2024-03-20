@@ -20,7 +20,7 @@ from tqdm import tqdm
 import utils
 import wandb
 from config import config
-from metrics import dice_coefficient, mean_iou, pixel_accuracy
+from metrics import dice_coefficient, pixel_accuracy
 from model import Model
 
 
@@ -68,6 +68,7 @@ def train(train_dataloader, model, criterion, optimizer, device):
     train_dice = 0
     for inputs, targets in tqdm(train_dataloader):
         targets = utils.map_id_to_train_id(targets)
+        print(targets.unique())
         inputs, targets = inputs.to(device), targets.to(device)
 
         optimizer.zero_grad()
@@ -159,13 +160,6 @@ def main(args):
     })
         scheduler.step()
         
-    # # 4. Log an artifact to W&B
-    # wandb.log_artifact(model)
-
-    # # Optional: save model at the end
-    # model.to_onnx()
-    # wandb.save("model/model.onnx")
-    
     # Save model
     torch.save(model.state_dict(), "./model.pth")
 
