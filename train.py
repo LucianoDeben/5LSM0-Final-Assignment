@@ -167,7 +167,7 @@ def main(args):
     # wandb.save("model/model.onnx")
     
     # Save model
-    torch.save(model.state_dict(), "./unet-model.pth")
+    torch.save(model.state_dict(), "./model.pth")
 
 if __name__ == "__main__":
     # Get the arguments

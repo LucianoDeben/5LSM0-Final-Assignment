@@ -1,19 +1,20 @@
 import torch
 import torch.nn.functional as F
-import torchvision.transforms as v2
+from torchvision.transforms import (Compose, ConvertImageDtype, Normalize,
+                                    PILToTensor, Resize)
 
 
 def preprocess(img):
-        transform = v2.Compose([
-        v2.Resize((256, 256)),  
-        v2.PILToTensor(), 
-        v2.ToDtype(torch.float32),
-        v2.Normalize((0, 0, 0), (1, 1, 1))])  
+        transform = Compose([
+        Resize((256, 256)),  
+        PILToTensor(), 
+        ConvertImageDtype(torch.float32),
+        Normalize((0, 0, 0), (1, 1, 1))])  
         return transform(img)
 
-def postprocess(prediction, shape = (1024, 2048, 34)):
+def postprocess(prediction, shape = (256, 256, 18)):
     # Resize prediction to original image size
-    prediction = F.interpolate(prediction.unsqueeze(0), size=shape, mode='bilinear', align_corners=False).squeeze(0)
+    prediction = F.interpolate(prediction.unsqueeze(0), size=(shape[0], shape[1]), mode='bilinear', align_corners=False).squeeze(0)
     
     # Apply softmax to get probabilities
     prediction = F.softmax(prediction, dim=0)

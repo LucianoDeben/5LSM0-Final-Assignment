@@ -3,3 +3,4 @@
 /wandb
 /wandbslurm-*.out
 *.pth
+*.out
