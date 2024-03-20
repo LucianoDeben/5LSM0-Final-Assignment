@@ -1,3 +1,4 @@
 /data
 /models
 /wandbslurm-*.out
+*.pth
