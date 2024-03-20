@@ -1,0 +1,57 @@
+/var/spool/slurm/slurmd/job5535477/slurm_script: line 9: cd: /gpfs/home4/scur0755/5LSM0-Final-Assignment/: No such file or directory
+/var/spool/slurm/slurmd/job5535477/slurm_script: line 12: pip: command not found
+mkdir: cannot create directory 'wandb/5535477': No such file or directory
+wandb: WARNING Path wandb/5535477/wandb/ wasn't writable, using system temp directory
+wandb: WARNING Path wandb/5535477/wandb/ wasn't writable, using system temp directory.
+wandb: WARNING Path wandb/5535477/wandb/ wasn't writable, using system temp directory
+wandb: Currently logged in as: ldeben20 (luciano-deben). Use `wandb login --relogin` to force relogin
+Traceback (most recent call last):
+  File "/gpfs/home1/scur0755/5LSM0-Final-Assignment/train.py", line 11, in <module>
+    import keras
+ModuleNotFoundError: No module named 'keras'
+[2024-03-14 10:48:36,633] torch.distributed.elastic.multiprocessing.api: [ERROR] failed (exitcode: 1) local_rank: 0 (pid: 908910) of binary: /usr/bin/python3
+Traceback (most recent call last):
+  File "/usr/local/bin/torchrun", line 8, in <module>
+    sys.exit(main())
+  File "/usr/local/lib/python3.10/dist-packages/torch/distributed/elastic/multiprocessing/errors/__init__.py", line 346, in wrapper
+    return f(*args, **kwargs)
+  File "/usr/local/lib/python3.10/dist-packages/torch/distributed/run.py", line 806, in main
+    run(args)
+  File "/usr/local/lib/python3.10/dist-packages/torch/distributed/run.py", line 797, in run
+    elastic_launch(
+  File "/usr/local/lib/python3.10/dist-packages/torch/distributed/launcher/api.py", line 134, in __call__
+    return launch_agent(self._config, self._entrypoint, list(args))
+  File "/usr/local/lib/python3.10/dist-packages/torch/distributed/launcher/api.py", line 264, in launch_agent
+    raise ChildFailedError(
+torch.distributed.elastic.multiprocessing.errors.ChildFailedError: 
+============================================================
+train.py FAILED
+------------------------------------------------------------
+Failures:
+  <NO_OTHER_FAILURES>
+------------------------------------------------------------
+Root Cause (first observed failure):
+[0]:
+  time      : 2024-03-14_10:48:36
+  host      : gcn42.local.snellius.surf.nl
+  rank      : 0 (local_rank: 0)
+  exitcode  : 1 (pid: 908910)
+  error_file: <N/A>
+  traceback : To enable traceback see: https://pytorch.org/docs/stable/elastic/errors.html
+============================================================
+srun: error: gcn42: task 0: Exited with exit code 1
+srun: Terminating StepId=5535477.0
+
+JOB STATISTICS
+==============
+Job ID: 5535477
+Cluster: snellius
+User/Group: scur0755/scur0755
+State: FAILED (exit code 1)
+Nodes: 1
+Cores per node: 18
+CPU Utilized: 00:00:13
+CPU Efficiency: 3.01% of 00:07:12 core-walltime
+Job Wall-clock time: 00:00:24
+Memory Utilized: 2.63 MB
+Memory Efficiency: 0.00% of 120.00 GB
