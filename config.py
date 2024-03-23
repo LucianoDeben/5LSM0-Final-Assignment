@@ -11,7 +11,9 @@ run = wandb.init(project='CityScapes', entity='luciano-deben', config={
     "optimizer": "Adam",
     "scheduler": "StepLR",
     "scheduler_step_size": 10,
-    "scheduler_gamma": 0.1
+    "scheduler_gamma": 0.1,
+    "validation_size": 0.1,
+    "weight_decay": 0.0001
 })
 
 config = wandb.config

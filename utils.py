@@ -1,6 +1,6 @@
 from collections import namedtuple
-import torch
 
+import torch
 
 Label = namedtuple( 'Label' , [
 
