@@ -3,10 +3,10 @@ import wandb
 # Initialize W&B run
 run = wandb.init(project='CityScapes', entity='luciano-deben', config={
     "learning_rate": 0.001,
-    "batch_size": 2,
-    "num_epochs": 1,
+    "batch_size": 64,
+    "num_epochs": 100,
     "num_workers": 8,
-    "architecture": "U-Net",
+    "architecture": "U-Net Enhanced",
     "dataset": "Cityscapes",
     "optimizer": "Adam",
     "scheduler": "StepLR",
