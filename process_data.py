@@ -1,16 +1,15 @@
 import torch
 import torch.nn.functional as F
-from torchvision import transforms
 from torchvision.transforms import (Compose, ConvertImageDtype, Normalize,
                                     PILToTensor, Resize)
 
 
 def preprocess(img):
         transform = Compose([
-        Resize((256, 256)),  
-        PILToTensor(), 
+        Resize((256, 256)),
+        PILToTensor(),  
         ConvertImageDtype(torch.float32),
-        Normalize((0, 0, 0), (1, 1, 1))])
+        Normalize((0.5, 0.5, 0.5), (0.5, 0.5, 0.5))])
         img = transform(img)
         img = img.unsqueeze(0)
         
