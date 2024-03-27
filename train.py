@@ -11,7 +11,7 @@ from torch.utils.data import DataLoader, random_split
 from torchmetrics.functional.classification import (accuracy, dice,
                                                     multiclass_jaccard_index)
 from torchvision.datasets import Cityscapes
-from torchvision.transforms import v2
+from torchvision.transforms import InterpolationMode, v2
 from tqdm import tqdm
 
 import utils
@@ -31,7 +31,7 @@ def get_arg_parser():
     parser.add_argument("--data_path", type=str, default=".", help="Path to the data")
     return parser
 
-def get_data_loader(args, batch_size, num_workers):
+def get_data_loader(args, batch_size, num_workers, spatial_dims):
     """
     
     Get the data loader
@@ -45,20 +45,17 @@ def get_data_loader(args, batch_size, num_workers):
     train_loader: DataLoader
     val_loader: DataLoader
     """
-    # Define the transform for the images
     transform = v2.Compose([
-        v2.Resize((256, 256)),  
-        v2.PILToTensor(), 
-        v2.ToDtype(torch.float32),
-        v2.Normalize((0, 0, 0), (1, 1, 1))
-    ])
-    
-    # Define the transform for the labels
+            v2.Resize(spatial_dims),  
+            v2.ToImage(), 
+            v2.ToDtype(torch.float32, scale=True),
+            v2.Normalize((0.5, 0.5, 0.5), (0.5, 0.5, 0.5)),
+        ])
+        
     target_transform = v2.Compose([
-        v2.Resize((256, 256), interpolation=0),
-        v2.PILToTensor(), 
-        v2.ToDtype(torch.float32)
-    ])
+        v2.Resize(spatial_dims, interpolation=InterpolationMode.NEAREST), 
+        v2.ToImage()
+        ])
 
     # Load the dataset
     dataset = Cityscapes(args.data_path, split='train', mode='fine', target_type='semantic', transform=transform, target_transform=target_transform)
@@ -84,6 +81,7 @@ def train(train_dataloader, model, criterion, optimizer, device):
     train_iou = 0.0
     
     for inputs, targets in tqdm(train_dataloader):
+        print(targets)
         targets = targets.long().squeeze(dim = 1)   
         targets = utils.map_id_to_train_id(targets)
         targets[targets == 255] = 19
@@ -99,10 +97,7 @@ def train(train_dataloader, model, criterion, optimizer, device):
         outputs_max = torch.argmax(outputs, dim=1)
         #outputs_max = torch.unsqueeze(outputs_max, 1)
         
-        print(outputs_max.shape, targets.shape)
-        print(torch.unique(outputs_max), torch.unique(targets))
-        
-        train_acc += accuracy(outputs_max, targets, task="multiclass", num_classes=20).detach()
+        train_acc += accuracy(outputs_max, targets, task="multiclass", num_classes=20, ignore_index=19).detach()
         train_dice += dice(outputs, targets, ignore_index=19).detach()
         train_iou += multiclass_jaccard_index(outputs, targets, num_classes=20, ignore_index=19).detach()
 
@@ -118,6 +113,7 @@ def validate(val_dataloader, model, criterion, device):
     
     with torch.no_grad():
         for inputs, targets in tqdm(val_dataloader):
+            print(targets)
             targets = targets.long().squeeze(dim = 1)   
             targets = utils.map_id_to_train_id(targets)
             targets[targets == 255] = 19
@@ -150,7 +146,7 @@ def main(args):
     """
 
     # Data loading
-    train_loader, val_loader = get_data_loader(args, config.batch_size, config.num_workers)
+    train_loader, val_loader = get_data_loader(args, config.batch_size, config.num_workers, spatial_dims=(256, 256))
     
     # Define the device
     device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
