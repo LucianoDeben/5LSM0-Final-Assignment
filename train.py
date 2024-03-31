@@ -1,29 +1,31 @@
 import os
 
-os.environ['KMP_DUPLICATE_LIB_OK']='True'
+os.environ["KMP_DUPLICATE_LIB_OK"] = "True"
 
 from argparse import ArgumentParser
 
 import torch
 from torch import nn
-from torch.optim.lr_scheduler import StepLR
-from torch.utils.data import DataLoader, random_split
-from torchmetrics.functional.classification import (accuracy, dice,
-                                                    multiclass_jaccard_index)
-from torchvision.datasets import Cityscapes
-from torchvision.transforms import InterpolationMode, v2
+from torch.cuda.amp import GradScaler, autocast
+from torch.optim.lr_scheduler import LambdaLR
+from torchmetrics.functional.classification import (
+    accuracy,
+    dice,
+    multiclass_jaccard_index,
+)
 from tqdm import tqdm
 
 import utils
 import wandb
 from config import config
 from model import Model
+from process_data import get_data_loader
 
 
 def get_arg_parser():
     """
     Get the argument parser
-    
+
     Returns:
     parser: ArgumentParser
     """
@@ -31,78 +33,62 @@ def get_arg_parser():
     parser.add_argument("--data_path", type=str, default=".", help="Path to the data")
     return parser
 
-def get_data_loader(args, batch_size, num_workers, spatial_dims):
-    """
-    
-    Get the data loader
-    
-    Args:
-    args: Namespace
-    batch_size: int
-    num_workers: int
-    
-    Returns:
-    train_loader: DataLoader
-    val_loader: DataLoader
-    """
-    transform = v2.Compose([
-            v2.Resize(spatial_dims),  
-            v2.ToImage(), 
-            v2.ToDtype(torch.float32, scale=True),
-            v2.Normalize((0.5, 0.5, 0.5), (0.5, 0.5, 0.5)),
-        ])
-        
-    target_transform = v2.Compose([
-        v2.Resize(spatial_dims, interpolation=InterpolationMode.NEAREST), 
-        v2.ToImage()
-        ])
 
-    # Load the dataset
-    dataset = Cityscapes(args.data_path, split='train', mode='fine', target_type='semantic', transform=transform, target_transform=target_transform)
-    
-    # Define the size of the validation set
-    val_size = int(config.validation_size * len(dataset))
-    train_size = len(dataset) - val_size
-
-    # Split the dataset
-    train_subset, val_subset = random_split(dataset, [train_size, val_size])
-
-    # Define the data loaders
-    train_loader = DataLoader(train_subset, batch_size=batch_size, shuffle=True, num_workers=num_workers)
-    val_loader = DataLoader(val_subset, batch_size=batch_size, shuffle=False, num_workers=num_workers)
-
-    return train_loader, val_loader
-
-def train(train_dataloader, model, criterion, optimizer, device):
+def train(train_dataloader, model, criterion, optimizer, device, grad_accum_steps=4):
     model.train()
     train_loss = 0.0
     train_acc = 0.0
     train_dice = 0.0
     train_iou = 0.0
-    
-    for inputs, targets in tqdm(train_dataloader):
-        print(targets)
-        targets = targets.long().squeeze(dim = 1)   
+
+    # Create a GradScaler instance
+    scaler = GradScaler()
+
+    optimizer.zero_grad()  # Reset gradients tensors
+
+    for i, (inputs, targets) in enumerate(tqdm(train_dataloader), start=1):
+        targets = targets.long().squeeze(dim=1)
         targets = utils.map_id_to_train_id(targets)
         targets[targets == 255] = 19
         inputs, targets = inputs.to(device), targets.to(device)
 
-        optimizer.zero_grad()
-        outputs = model(inputs)
-        loss = criterion(outputs, targets)
-        loss.backward()
-        optimizer.step()
-        
-        train_loss += loss.detach()
+        # Runs the forward pass with autocasting
+        with autocast():
+            outputs = model(inputs)
+            loss = criterion(outputs, targets)
+
+        # Scales loss and calls backward() to create scaled gradients
+        scaler.scale(loss).backward()
+
+        # Gradient accumulation
+        if i % grad_accum_steps == 0 or i == len(train_dataloader):
+            scaler.step(optimizer)
+
+            # Updates the scale for next iteration
+            scaler.update()
+
+            # Reset gradients tensors
+            optimizer.zero_grad()
+
+        # Update metrics
+        train_loss += loss.item()
         outputs_max = torch.argmax(outputs, dim=1)
-        #outputs_max = torch.unsqueeze(outputs_max, 1)
-        
-        train_acc += accuracy(outputs_max, targets, task="multiclass", num_classes=20, ignore_index=19).detach()
+        train_acc += accuracy(
+            outputs_max, targets, task="multiclass", num_classes=20
+        ).detach()
         train_dice += dice(outputs, targets, ignore_index=19).detach()
-        train_iou += multiclass_jaccard_index(outputs, targets, num_classes=20, ignore_index=19).detach()
+        train_iou += multiclass_jaccard_index(
+            outputs, targets, num_classes=20, ignore_index=19
+        ).detach()
 
     num_batches = len(train_dataloader)
-    return (train_loss / num_batches).item(), (train_acc / num_batches).item(), (train_dice / num_batches).item(), (train_iou / num_batches).item()
+    return (
+        (train_loss / num_batches),
+        (train_acc / num_batches),
+        (train_dice / num_batches),
+        (train_iou / num_batches),
+    )
+
 
 def validate(val_dataloader, model, criterion, device):
     model.eval()
@@ -110,62 +96,97 @@ def validate(val_dataloader, model, criterion, device):
     val_acc = 0.0
     val_dice = 0.0
     val_iou = 0.0
-    
+
+    # Create a GradScaler instance
+    scaler = GradScaler()
+
     with torch.no_grad():
         for inputs, targets in tqdm(val_dataloader):
             print(targets)
-            targets = targets.long().squeeze(dim = 1)   
+            targets = targets.long().squeeze(dim=1)
             targets = utils.map_id_to_train_id(targets)
             targets[targets == 255] = 19
             inputs, targets = inputs.to(device), targets.to(device)
 
-            outputs = model(inputs)
-            loss = criterion(outputs, targets)
-        
+            # Use autocast to enable mixed precision
+            with autocast():
+                outputs = model(inputs)
+                loss = criterion(outputs, targets)
+
+            # Scale the loss using GradScaler
+            scaler.scale(loss)
+
             val_loss += loss.detach()
             outputs_max = torch.argmax(outputs, dim=1)
-            #outputs_max = torch.unsqueeze(outputs_max, 1)
-            
-            val_acc += accuracy(outputs_max, targets, task="multiclass", num_classes=20).detach()
+            val_acc += accuracy(
+                outputs_max, targets, task="multiclass", num_classes=20
+            ).detach()
             val_dice += dice(outputs, targets, ignore_index=19).detach()
-            val_iou += multiclass_jaccard_index(outputs, targets, num_classes=20, ignore_index=19).detach()
+            val_iou += multiclass_jaccard_index(
+                outputs, targets, num_classes=20, ignore_index=19
+            ).detach()
 
     num_batches = len(val_dataloader)
-    return (val_loss / num_batches).item(), (val_acc / num_batches).item(), (val_dice / num_batches).item(), (val_iou / num_batches).item()	
+    return (
+        (val_loss / num_batches).item(),
+        (val_acc / num_batches).item(),
+        (val_dice / num_batches).item(),
+        (val_iou / num_batches).item(),
+    )
 
 
 def main(args):
     """
     Main function for training the model
-    
+
     Args:
     args: Namespace
-    
+
     Returns:
     None
     """
 
     # Data loading
-    train_loader, val_loader = get_data_loader(args, config.batch_size, config.num_workers, spatial_dims=(256, 256))
-    
+    train_loader, val_loader = get_data_loader(
+        args, config.batch_size, config.num_workers, config.validation_size
+    )
+
     # Define the device
-    device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
+    device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 
     # Move your model to the device
-    model = Model().to(device)
+    model = Model()
+    # print(model)
+
+    # Freeze the backbone parameters
+    # Freeze the first convolution layer
+    for name, param in model.named_parameters():
+        if "layer1" in name or "layer2" in name or "layer3" in name or "layer4" in name:
+            param.requires_grad = False
+
+    model.to(device)
+
+    if torch.cuda.device_count() > 1:
+        print("Using", torch.cuda.device_count(), "GPUs for training.")
+        model = nn.parallel.DistributedDataParallel(model)
 
     # Define the loss function
     criterion = nn.CrossEntropyLoss(ignore_index=19)
 
     # Define the optimizer
-    optimizer = torch.optim.Adam(model.parameters(), lr=config.learning_rate, weight_decay=config.weight_decay)
+    optimizer = torch.optim.AdamW(
+        model.parameters(),
+        lr=config.learning_rate,
+        weight_decay=config.weight_decay,
+        fused=True,
+    )
 
-    # Define the learning rate scheduler
-    scheduler = StepLR(optimizer, step_size=config.scheduler_step_size, gamma=config.scheduler_gamma)
+    # Define the function for adjusting learning rate at each epoch
+    lr_lambda = lambda epoch: (1 - epoch / config.num_epochs) ** 0.9
 
-    # Define the number of epochs
-    n_epochs = config.num_epochs
-    
+    # Create the scheduler
+    scheduler = LambdaLR(optimizer, lr_lambda=lr_lambda)
+
     # Training loop
     train_losses = []
     val_losses = []
@@ -175,13 +196,19 @@ def main(args):
     val_dices = []
     train_ious = []
     val_ious = []
-    
+
     wandb.watch(model, log_freq=100)
 
-    for epoch in range(n_epochs):
+    best_val_loss = float("inf")
+
+    for epoch in range(config.num_epochs):
         print(f"Epoch {epoch+1}\n-------------------------------")
-        train_loss, train_acc, train_dice, train_iou = train(train_loader, model, criterion, optimizer, device)
-        val_loss, val_acc, val_dice, val_iou = validate(val_loader, model, criterion, device)
+        train_loss, train_acc, train_dice, train_iou = train(
+            train_loader, model, criterion, optimizer, device, config.grad_accum_steps
+        )
+        val_loss, val_acc, val_dice, val_iou = validate(
+            val_loader, model, criterion, device
+        )
         train_losses.append(train_loss)
         val_losses.append(val_loss)
         train_accs.append(train_acc)
@@ -190,25 +217,33 @@ def main(args):
         val_dices.append(val_dice)
         train_ious.append(train_iou)
         val_ious.append(val_iou)
-        
-        wandb.log({
-            "epoch": epoch,
-    "train_loss": train_loss,
-    "train_acc": train_acc,
-    "train_dice": train_dice,
-    "train_lr": optimizer.param_groups[0]["lr"],
-    })
-        wandb.log({
-            "epoch": epoch,
-    "val_loss": val_loss,
-    "val_acc": val_acc,
-    "val_dice": val_dice,
-    "val_lr": optimizer.param_groups[0]["lr"]
-    })
+
+        wandb.log(
+            {
+                "epoch": epoch,
+                "train_loss": train_loss,
+                "train_acc": train_acc,
+                "train_dice": train_dice,
+                "train_iou": train_iou,
+                "lr": optimizer.param_groups[0]["lr"],
+            }
+        )
+        wandb.log(
+            {
+                "epoch": epoch,
+                "val_loss": val_loss,
+                "val_acc": val_acc,
+                "val_dice": val_dice,
+                "val_iou": val_iou,
+            }
+        )
         scheduler.step()
-        
-    # Save model
-    torch.save(model.state_dict(), "./model.pth")
+
+        # Conditionally Save model
+        if val_loss < best_val_loss:
+            best_val_loss = val_loss
+            torch.save(model.state_dict(), f"./model_{val_loss:.2f}.pth")
+
 
 if __name__ == "__main__":
     # Get the arguments
