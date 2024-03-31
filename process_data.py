@@ -192,14 +192,13 @@ def get_augmentations(spatial_dims=(520, 1040)):
                 brightness=(0.25, 2.5),
                 contrast=(0.25, 3),
                 saturation=(0.5, 2.5),
-                hue=0.25,
+                hue=0.20,
             ),
-            #     v2.RandomApply([v2.ElasticTransform(alpha=75, sigma=5)], p=0.05),
-            #     v2.Normalize((0.5, 0.5, 0.5), (0.5, 0.5, 0.5)),
-            #     v2.RandomApply(
-            #         [v2.GaussianBlur(kernel_size=(9, 17), sigma=(3, 16))], p=0.1
-            #     ),
-            #     v2.RandomAdjustSharpness(sharpness_factor=10, p=0.1),
+            # v2.RandomApply([v2.ElasticTransform(alpha=75, sigma=5)], p=0.01),
+            # v2.RandomApply(
+            #     [v2.GaussianBlur(kernel_size=(9, 17), sigma=(3, 16))], p=0.05
+            # ),
+            # v2.RandomAdjustSharpness(sharpness_factor=10, p=0.1),
         ]
     )
 

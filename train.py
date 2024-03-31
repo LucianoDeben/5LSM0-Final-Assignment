@@ -102,7 +102,6 @@ def validate(val_dataloader, model, criterion, device):
 
     with torch.no_grad():
         for inputs, targets in tqdm(val_dataloader):
-            print(targets)
             targets = targets.long().squeeze(dim=1)
             targets = utils.map_id_to_train_id(targets)
             targets[targets == 255] = 19
@@ -156,12 +155,10 @@ def main(args):
 
     # Move your model to the device
     model = Model()
-    # print(model)
 
     # Freeze the backbone parameters
-    # Freeze the first convolution layer
     for name, param in model.named_parameters():
-        if "layer1" in name or "layer2" in name or "layer3" in name or "layer4" in name:
+        if "backbone" in name:
             param.requires_grad = False
 
     model.to(device)
