@@ -157,9 +157,9 @@ def main(args):
     model = Model()
 
     # Freeze the backbone parameters
-    for name, param in model.named_parameters():
-        if "backbone" in name:
-            param.requires_grad = False
+    # for name, param in model.named_parameters():
+    #     if "backbone" in name:
+    #         param.requires_grad = False
 
     model.to(device)
 

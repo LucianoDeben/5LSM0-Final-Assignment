@@ -6,8 +6,8 @@ run = wandb.init(
     entity="luciano-deben",
     config={
         "learning_rate": 0.001,
-        "batch_size": 64,
-        "num_epochs": 100,
+        "batch_size": 2,
+        "num_epochs": 1,
         "num_workers": 8,
         "architecture": "DeepLabV3Plus",
         "dataset": "Cityscapes",
