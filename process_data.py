@@ -87,7 +87,36 @@ def preprocess(img):
     joint_augmentations, image_augmentations = get_augmentations()
     img = joint_augmentations(img)
     img = image_augmentations(img)
+    if len(img.shape) == 3:
+        img = img.unsqueeze(0)
     return img
+
+
+def postprocess(prediction, shape=(256, 256)):
+    # Apply softmax to get probabilities
+    prediction = torch.nn.functional.softmax(prediction, dim=1)
+
+    # Get the class with the highest probability for each pixel
+    prediction = torch.argmax(prediction, dim=1)
+
+    # Convert the tensor to a floating point type
+    prediction = prediction.float()
+
+    # Add an extra dimension for the number of channels
+    prediction = prediction.unsqueeze(0)
+
+    # Resize prediction to original image size
+    prediction = F.resize(
+        prediction, size=shape, interpolation=InterpolationMode.NEAREST
+    )
+
+    # Remove the extra dimension
+    prediction = prediction.squeeze(0)
+
+    # Convert the tensor to a numpy array
+    prediction = prediction.cpu().detach().numpy()
+
+    return prediction
 
 
 def preprocess_mask(mask):
@@ -117,34 +146,7 @@ def joint_preprocess(img, mask):
     return img, mask
 
 
-def postprocess(prediction, shape=(520, 1040)):
-    # Apply softmax to get probabilities
-    prediction = F.softmax(prediction, dim=1)
-
-    # Get the class with the highest probability for each pixel
-    prediction = torch.argmax(prediction, dim=1)
-
-    # Convert the tensor to a floating point type
-    prediction = prediction.float()
-
-    # Add an extra dimension for the number of channels
-    prediction = prediction.unsqueeze(0)
-
-    # Resize prediction to original image size
-    prediction = F.resize(
-        prediction, size=shape, interpolation=InterpolationMode.NEAREST
-    )
-
-    # Remove the extra dimension
-    prediction = prediction.squeeze(0)
-
-    # Convert the tensor to a numpy array
-    prediction = prediction.cpu().detach().numpy()
-
-    return prediction
-
-
-def get_transforms(spatial_dims=(520, 1040)):
+def get_transforms(spatial_dims=(256, 256)):
     """
     Get the data transforms
 
@@ -170,7 +172,7 @@ def get_transforms(spatial_dims=(520, 1040)):
     return transform, target_transform
 
 
-def get_augmentations(spatial_dims=(520, 1040)):
+def get_augmentations(spatial_dims=(256, 256)):
     """
     Get the data augmentations
 
@@ -207,9 +209,9 @@ def get_augmentations(spatial_dims=(520, 1040)):
 
 def get_data_loader(args, batch_size, num_workers, validation_size=0.1):
     # Define the transform for the images
-    transform, target_transform = get_transforms(spatial_dims=(520, 1040))
+    transform, target_transform = get_transforms(spatial_dims=(256, 256))
     joint_augmentations, image_augmentations = get_augmentations(
-        spatial_dims=(520, 1040)
+        spatial_dims=(256, 256)
     )
     joint_transform = JointTransform(
         transform, target_transform, joint_augmentations, image_augmentations

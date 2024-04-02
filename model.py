@@ -1,18 +1,135 @@
+import torch
 from torch import nn
-from torchvision.models.segmentation import (DeepLabV3_ResNet101_Weights,
-                                             deeplabv3_resnet101)
+from torchvision.models.segmentation import (
+    DeepLabV3_ResNet101_Weights,
+    deeplabv3_resnet101,
+)
 from torchvision.models.segmentation.deeplabv3 import DeepLabHead
 from torchvision.models.segmentation.fcn import FCNHead
 
+# class Model(nn.Module):
+#     def __init__(self):
+#         super(Model, self).__init__()
+#         self.weights = DeepLabV3_ResNet101_Weights.DEFAULT
+#         self.model = deeplabv3_resnet101(weights=self.weights)
+#         self.model.classifier = DeepLabHead(2048, 20)
+#         self.model.aux_classifier = FCNHead(1024, 20)
+#         self.model.eval()
+
+#     def forward(self, x):
+#         # if len(x.shape) == 3:
+#         #     x = x.unsqueeze(0)  # add a batch dimension
+#         return self.model(x)["out"]
+
 
 class Model(nn.Module):
-    def __init__(self, num_classes=20):
-        super(Model, self).__init__()
-        self.weights = DeepLabV3_ResNet101_Weights.DEFAULT
-        self.model = deeplabv3_resnet101(weights=self.weights)
-        self.model.classifier = DeepLabHead(2048, num_classes)
-        self.model.aux_classifier = FCNHead(1024, num_classes)
-        self.model.train()
+    def __init__(self):
+        super().__init__()
 
-    def forward(self, x):
-        return self.model(x)['out']
+        """ Encoder """
+        self.e1 = encoder_block(3, 64)
+        self.e2 = encoder_block(64, 128)
+        self.e3 = encoder_block(128, 256)
+        self.e4 = encoder_block(256, 512)
+
+        """ Bottleneck """
+        self.b = conv_block(512, 1024)
+
+        """ Decoder """
+        self.d1 = decoder_block(1024, 512)
+        self.d2 = decoder_block(512, 256)
+        self.d3 = decoder_block(256, 128)
+        self.d4 = decoder_block(128, 64)
+
+        """ Classifier """
+        self.outputs = nn.Conv2d(64, 20, kernel_size=1, padding=0)
+
+    def forward(self, inputs):
+        """Encoder"""
+        s1, p1 = self.e1(inputs)
+        s2, p2 = self.e2(p1)
+        s3, p3 = self.e3(p2)
+        s4, p4 = self.e4(p3)
+
+        """ Bottleneck """
+        b = self.b(p4)
+
+        """ Decoder """
+        d1 = self.d1(b, s4)
+        d2 = self.d2(d1, s3)
+        d3 = self.d3(d2, s2)
+        d4 = self.d4(d3, s1)
+
+        """ Segmentation output """
+        outputs = self.outputs(d4)
+
+        return outputs
+
+
+class conv_block(nn.Module):
+    def __init__(self, in_c, out_c):
+        super().__init__()
+
+        self.conv1 = nn.Conv2d(in_c, out_c, kernel_size=3, padding=1)
+        self.bn1 = nn.BatchNorm2d(out_c)
+
+        self.conv2 = nn.Conv2d(out_c, out_c, kernel_size=3, padding=1)
+        self.bn2 = nn.BatchNorm2d(out_c)
+
+        self.relu = nn.ReLU()
+
+        # Apply He initialization
+        nn.init.kaiming_uniform_(self.conv1.weight, nonlinearity="relu")
+        nn.init.kaiming_uniform_(self.conv2.weight, nonlinearity="relu")
+
+    def forward(self, inputs):
+        x = self.conv1(inputs)
+        x = self.bn1(x)
+        x = self.relu(x)
+
+        x = self.conv2(x)
+        x = self.bn2(x)
+        x = self.relu(x)
+
+        return x
+
+
+""" Encoder block:
+    It consists of an conv_block followed by a max pooling.
+    Here the number of filters doubles and the height and width half after every block.
+"""
+
+
+class encoder_block(nn.Module):
+    def __init__(self, in_c, out_c):
+        super().__init__()
+
+        self.conv = conv_block(in_c, out_c)
+        self.pool = nn.MaxPool2d((2, 2))
+
+    def forward(self, inputs):
+        x = self.conv(inputs)
+        p = self.pool(x)
+
+        return x, p
+
+
+""" Decoder block:
+    The decoder block begins with a transpose convolution, followed by a concatenation with the skip
+    connection from the encoder block. Next comes the conv_block.
+    Here the number filters decreases by half and the height and width doubles.
+"""
+
+
+class decoder_block(nn.Module):
+    def __init__(self, in_c, out_c):
+        super().__init__()
+
+        self.up = nn.ConvTranspose2d(in_c, out_c, kernel_size=2, stride=2, padding=0)
+        self.conv = conv_block(out_c + out_c, out_c)
+
+    def forward(self, inputs, skip):
+        x = self.up(inputs)
+        x = torch.cat([x, skip], axis=1)
+        x = self.conv(x)
+        return x
