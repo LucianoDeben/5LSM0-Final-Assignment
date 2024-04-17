@@ -6,7 +6,7 @@ run = wandb.init(
     entity="luciano-deben",
     config={
         "learning_rate": 0.001,
-        "batch_size": 16,
+        "batch_size": 2,
         "num_epochs": 1,
         "num_workers": 8,
         "architecture": "DeepLabV3Plus",
@@ -15,7 +15,7 @@ run = wandb.init(
         "scheduler": "LambdaLR",
         "validation_size": 0.1,
         "weight_decay": 0.0001,
-        "grad_accum_steps": 8,
+        "grad_accum_steps": 1,
     },
 )
 

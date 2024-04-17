@@ -44,7 +44,7 @@ def train(train_dataloader, model, criterion, optimizer, device, grad_accum_step
     # Create a GradScaler instance
     scaler = GradScaler()
 
-    optimizer.zero_grad()  # Reset gradients tensors
+    optimizer.zero_grad()
 
     for i, (inputs, targets) in enumerate(tqdm(train_dataloader), start=1):
         targets = targets.long().squeeze(dim=1)
@@ -157,9 +157,9 @@ def main(args):
     model = Model()
 
     # Freeze the backbone parameters
-    for name, param in model.named_parameters():
-        if "backbone" in name:
-            param.requires_grad = False
+    # for name, param in model.named_parameters():
+    #     if "backbone" in name:
+    #         param.requires_grad = False
 
     model.to(device)
 
@@ -239,7 +239,7 @@ def main(args):
         # Conditionally Save model
         if val_loss < best_val_loss:
             best_val_loss = val_loss
-            torch.save(model.state_dict(), f"./model_{val_loss:.2f}.pth")
+            torch.save(model.state_dict(), f"./model.pth")
 
 
 if __name__ == "__main__":
