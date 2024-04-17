@@ -1,9 +1,11 @@
 from functools import partial
 from typing import Optional
 
+import numpy as np
 import torch
-import torch.nn.functional as F
-import torchvision.transforms.functional as TF
+import torch.nn.functional as NF
+import torchvision.transforms.functional as F
+from sklearn.model_selection import train_test_split
 from torch import Tensor, nn
 from torch.utils.data import DataLoader, Subset, random_split
 from torchvision.datasets import Cityscapes
@@ -51,11 +53,11 @@ def postprocess(prediction, shape=(520, 1040)):
     # Check the number of dimensions in the input tensor
     if prediction.dim() == 4:
         # If the input tensor has a batch dimension, perform softmax and argmax over the second dimension
-        prediction = F.softmax(prediction, dim=1)
+        prediction = NF.softmax(prediction, dim=1)
         prediction = torch.argmax(prediction, dim=1)
     elif prediction.dim() == 3:
         # If the input tensor does not have a batch dimension, perform softmax and argmax over the first dimension
-        prediction = F.softmax(prediction, dim=0)
+        prediction = NF.softmax(prediction, dim=0)
         prediction = torch.argmax(prediction, dim=0)
     else:
         raise ValueError(
@@ -70,7 +72,7 @@ def postprocess(prediction, shape=(520, 1040)):
         prediction = prediction.unsqueeze(0)
 
     # Resize prediction to original image size
-    prediction = TF.resize(
+    prediction = F.resize(
         prediction, size=shape, interpolation=InterpolationMode.NEAREST
     )
 
@@ -96,22 +98,25 @@ def get_augmentations(spatial_dims=(520, 1040)):
             v2.RandomHorizontalFlip(p=0.5),
             v2.RandomResizedCrop(spatial_dims, scale=(0.8, 1.0)),
             v2.RandomAffine(degrees=10, translate=(0.05, 0.05), scale=(0.9, 1.1)),
+            v2.Identity(),
         ]
     )
 
     image_augmentations = v2.Compose(
         [
             v2.ColorJitter(
-                brightness=(0.25, 2.5),
-                contrast=(0.25, 3),
+                brightness=(0.5, 2.5),
+                contrast=(0.5, 3),
                 saturation=(0.5, 2.5),
-                hue=0.20,
+                hue=0.15,
             ),
+            v2.Normalize(mean=[0.485, 0.456, 0.406], std=[0.229, 0.224, 0.225]),
             v2.RandomApply([v2.ElasticTransform(alpha=75, sigma=5)], p=0.01),
             v2.RandomApply(
                 [v2.GaussianBlur(kernel_size=(9, 17), sigma=(3, 16))], p=0.05
             ),
             v2.RandomAdjustSharpness(sharpness_factor=10, p=0.05),
+            v2.Identity(),
         ]
     )
 
@@ -120,38 +125,47 @@ def get_augmentations(spatial_dims=(520, 1040)):
 
 def get_data_loader(args, batch_size, num_workers, validation_size=0.1):
 
-    # Load the dataset without any transformations
-    dataset = Cityscapes(
+    # Load the datasets
+    train_dataset = Cityscapes(
         args.data_path,
         split="train",
         mode="fine",
         target_type="semantic",
-        transforms=None,
+        transforms=train_preprocess,
     )
 
-    # Define the size of the validation set
-    val_size = int(validation_size * len(dataset))
-    train_size = len(dataset) - val_size
+    val_dataset = Cityscapes(
+        args.data_path,
+        split="train",
+        mode="fine",
+        target_type="semantic",
+        transforms=val_preprocess,
+    )
 
-    # Split the dataset into training and validation subsets
-    train_subset, val_subset = random_split(dataset, [train_size, val_size])
+    # Get indices for training and validation sets
+    num_train = len(train_dataset)
+    indices = list(range(num_train))
+    # split_idx = int(np.floor(validation_size * num_train))
 
-    # Apply the transformations to the subsets separately
-    train_subset = TransformedSubset(
-        train_subset, transform=train_preprocess
-    )  # your training transformations
-    val_subset = TransformedSubset(val_subset, transform=val_preprocess)
+    # train_idx, valid_idx = indices[:split_idx], indices[split_idx:]
+    # assert len(train_idx) != 0 and len(valid_idx) != 0
+
+    train_indices, val_indices = train_test_split(
+        indices, test_size=validation_size, random_state=42
+    )
+    train_dataset = Subset(train_dataset, train_indices)
+    val_dataset = Subset(val_dataset, val_indices)
 
     # Define the data loaders
     train_loader = DataLoader(
-        train_subset,
+        train_dataset,
         batch_size=batch_size,
         shuffle=True,
         num_workers=num_workers,
     )
 
     val_loader = DataLoader(
-        val_subset,
+        val_dataset,
         batch_size=batch_size,
         shuffle=False,
         num_workers=num_workers,
@@ -173,9 +187,9 @@ class MaskTransform(nn.Module):
 
     def forward(self, mask: Tensor) -> Tensor:
         if isinstance(self.resize_size, list):
-            mask = TF.resize(mask, self.resize_size, interpolation=self.interpolation)
+            mask = F.resize(mask, self.resize_size, interpolation=self.interpolation)
         if not isinstance(mask, Tensor):
-            mask = TF.pil_to_tensor(mask)
+            mask = F.pil_to_tensor(mask)
         return mask
 
     def __repr__(self) -> str:
@@ -191,15 +205,3 @@ class MaskTransform(nn.Module):
             f"The masks are resized to ``resize_size={self.resize_size}`` using ``interpolation={self.interpolation}``. "
             "Finally the values are converted to long datatype."
         )
-
-
-class TransformedSubset(Subset):
-    def __init__(self, subset, transform=None):
-        super().__init__(subset.dataset, subset.indices)
-        self.transform = transform
-
-    def __getitem__(self, idx):
-        x, y = super().__getitem__(idx)
-        if self.transform:
-            x, y = self.transform(x, y)
-        return x, y
