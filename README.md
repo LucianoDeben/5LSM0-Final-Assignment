@@ -4,10 +4,14 @@ This repository serves as the starting kit for the 5LSM0 final assignment.
 This assignment is a part of the 5LSM0 course. It involves working with the Cityscapes dataset and training a neural network. The assignment contributes to 50% of your final grade.
 
 ## Getting Started
+3 branches are setup:
+- main: This is the baseline model implementation and the first submission to the CodaLab competition
+- robustness: This includes the training of the model for submission on the robustness CodaLab competition
+- peak-performance: This includes the training of the model for submission on the peak-performance CodaLab competition 
 
 ### Dependencies
 
-We already created a DockerContainer with all dependencies to run on Snellius, in the run_main.sh file we refer to this container. You don't have to changes anything for this.
+We already created a DockerContainer with all dependencies to run on Snellius, in the run_main.sh file we refer to this container. You don't have to changes anything for this. Most dependecies are torch related. Make sure that a GPU version of torch is available.
 
 ### Installing
 
