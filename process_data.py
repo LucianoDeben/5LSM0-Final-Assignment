@@ -105,10 +105,10 @@ def get_augmentations(spatial_dims=(520, 1040)):
     image_augmentations = v2.Compose(
         [
             v2.ColorJitter(
-                brightness=(0.5, 2.5),
-                contrast=(0.5, 3),
-                saturation=(0.5, 2.5),
-                hue=0.15,
+                brightness=(0.75, 1.25),
+                contrast=(0.75, 1.25),
+                saturation=(0.75, 1.25),
+                hue=0.1,
             ),
             v2.Normalize(mean=[0.485, 0.456, 0.406], std=[0.229, 0.224, 0.225]),
             v2.RandomApply([v2.ElasticTransform(alpha=75, sigma=5)], p=0.01),
@@ -131,7 +131,7 @@ def get_data_loader(args, batch_size, num_workers, validation_size=0.1):
         split="train",
         mode="fine",
         target_type="semantic",
-        transforms=train_preprocess,
+        transforms=get_transforms256,
     )
 
     val_dataset = Cityscapes(
@@ -139,7 +139,7 @@ def get_data_loader(args, batch_size, num_workers, validation_size=0.1):
         split="train",
         mode="fine",
         target_type="semantic",
-        transforms=val_preprocess,
+        transforms=get_transforms256,
     )
 
     # Get indices for training and validation sets
@@ -205,3 +205,33 @@ class MaskTransform(nn.Module):
             f"The masks are resized to ``resize_size={self.resize_size}`` using ``interpolation={self.interpolation}``. "
             "Finally the values are converted to long datatype."
         )
+
+
+#################
+def get_transforms256(img, mask, spatial_dims=(256, 256)):
+    """
+    Get the data transforms
+
+    Returns:
+    transform: Compose
+    target_transform: Compose
+    """
+    transform = v2.Compose(
+        [
+            v2.Resize(spatial_dims),
+            v2.ToImage(),
+            v2.ToDtype(torch.float32, scale=True),
+        ]
+    )
+
+    target_transform = v2.Compose(
+        [
+            v2.Resize(spatial_dims, interpolation=InterpolationMode.NEAREST),
+            v2.ToImage(),
+        ]
+    )
+
+    img = transform(img)
+    mask = target_transform(mask)
+
+    return img, mask

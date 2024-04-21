@@ -15,7 +15,7 @@ class Model(nn.Module):
         self.model = deeplabv3_resnet101(weights=self.weights)
         self.model.classifier = DeepLabHead(2048, 20)
         self.model.aux_classifier = FCNHead(1024, 20)
-        self.model.train()
+        self.model.eval()
 
     def forward(self, x):
         return self.model(x)["out"]
