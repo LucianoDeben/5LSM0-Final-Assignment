@@ -4,3 +4,5 @@
 /wandbslurm-*.out
 *.pth
 *.out
+
+/notebooks/wandb

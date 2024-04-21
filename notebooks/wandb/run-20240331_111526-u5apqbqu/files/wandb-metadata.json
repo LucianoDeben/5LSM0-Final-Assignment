@@ -1,0 +1,52 @@
+{
+    "os": "Windows-10-10.0.22631-SP0",
+    "python": "3.11.8",
+    "heartbeatAt": "2024-03-31T09:15:28.733978",
+    "startedAt": "2024-03-31T09:15:26.317894",
+    "docker": null,
+    "cuda": null,
+    "args": [],
+    "state": "running",
+    "program": "<python with no main file>",
+    "codePathLocal": null,
+    "git": {
+        "remote": "https://github.com/LucianoDeben/5LSM0-Final-Assignment.git",
+        "commit": "fa61d4b0f7f281559c0730b455e74e4e8b1a58e3"
+    },
+    "email": "lutchocode@gmail.com",
+    "root": "C:/Users/20191678/OneDrive - TU Eindhoven/5LSM-/5LSM0-Final-Assignment",
+    "host": "20191678",
+    "username": "20191678",
+    "executable": "c:\\Users\\20191678\\AppData\\Local\\anaconda3\\envs\\torch-gpu\\python.exe",
+    "cpu_count": 6,
+    "cpu_count_logical": 12,
+    "cpu_freq": {
+        "current": 2208.0,
+        "min": 0.0,
+        "max": 2208.0
+    },
+    "cpu_freq_per_core": [
+        {
+            "current": 2208.0,
+            "min": 0.0,
+            "max": 2208.0
+        }
+    ],
+    "disk": {
+        "/": {
+            "total": 235.47655868530273,
+            "used": 216.87655639648438
+        }
+    },
+    "gpu": "Quadro P1000",
+    "gpu_count": 1,
+    "gpu_devices": [
+        {
+            "name": "Quadro P1000",
+            "memory_total": 4294967296
+        }
+    ],
+    "memory": {
+        "total": 15.556831359863281
+    }
+}
